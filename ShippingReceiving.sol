@@ -2,21 +2,24 @@
 pragma solidity ^0.8.18;
 
 contract Shipping {
-    //Structs
 
-	//a customized data structure for bill of lading
-	// @orderId::uint256
-	// @senderofgoods::address1
-	// @destinationofgoods 
-	// @receiverofbill::address2
-	// @contractStatus        
-	// Struct bol{}
-    struct Bol {
+    enum Status {
+        Pending,
+        Shipping,
+        Accepted,
+        Rejected,
+        Canceled
+    }
+
+    //Structs
+    //a customized data structure for bill of lading
+    struct Billoflanding {
         uint256 orderId;
         address senderOfGoods;
         string destinationOfGoods;
         address receiverOfBill;
-        bool contractStatus;
+        Status deliveryStatus; 
+        Cargo[] cargoIds;
     }
     
     //a customized data structure for company
@@ -34,53 +37,34 @@ contract Shipping {
     //     string companyAddress;
     // }
 
-    //a customized data structure for order
-    // @typesofgoods::string
-    // @quantityofgoods::uint256
-    // @specialInstructions::string
-    // @liftgatefees::boolean
-    // @paymentStatus::boolean
-    // Struct order{}
-    struct Order {
-        string typeOfGoods;
-        uint256 quantityOfGoods;
-        string specialInstructions;
-        bool liftGateFees;
-        bool paymentStatus;
-    }
-
     // a customized data structure for cargo
-    // @sender::string
-    // @receiver::string
-    // @material::string
-    // @materialCount::uint256
-    // @materialCost::uint256
     struct Cargo {
         string sender;
         string receiver;
         string material;
         uint256 materialCount;
         uint256 materialCost;
-
+        string specialInstructions;
+        Status deliveryStatus;
     }
 
-    //Events
-	//event to broadcast that order have been created
-	event orderCreated();
-	//event to broadcast that order has been shipped
-    event orderShipped();
-    //event to broadcast that order has been received
-    event orderReceived();
-    //event to update that the order location has been updated
-    event updatedLocation();
-    //event to broadcast that a bill of lading has been created
-    event billOfLadingCreated();
-    //event to broadcast that a bill of lading has been updated
-    event billOfLadingUpdated();
-    //event to broadcast that payment has been made
-    event payment();
-    // 
-    event itemShipped(address indexed sender);
+    //Events	
+	//event to broadcast that cargo have been created
+	event cargoCreated(address indexed _sender, string _receiver, string _material, uint256 _materialCount);
+	//event to broadcast that cargo has been shipped
+	event cargoShipped(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
+	//event to broadcast that cargo has been received
+	event cargoReceived(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
+	//event to update that the order location has been updated
+	event updatedLocation();
+	//event to broadcast that a bill of lading has been created
+	event billOfLandingCreated();
+	//event to broadcast that a bill of lading has been updated
+	event billOfLandingUpdated();
+	//event to broadcast that payment has been made
+	event payment();
+	// 
+	event itemShipped(address indexed _sender);
 
     //Variables
     address sender; //the msg.sender
@@ -90,6 +74,7 @@ contract Shipping {
 	bool isShipped; //A boolean to check if the order has been shipped
 	bool isReceived; //A boolean to check if the order has been received
     string currentLocation; //A boolean to get the currentLocation of the order
+    Cargo[] cargos;
 
     //Mappings
 
@@ -100,25 +85,35 @@ contract Shipping {
 	// mapping(address => Company) public companyInfo;
 	
 	//A mapping to return the order of a particular orderId ??
-	mapping(uint256 => Order) public orderId;
-    mapping (uint256 => Bol) public bolId;
+	// mapping(uint256 => Order) public orderId;
+    mapping (uint256 => Billoflanding) public bolId;
     mapping (uint256 => Cargo) public cargoId;
 
     //Modifiers
 	modifier onlySender() {
-        require(msg.sender === sender, "Only the sender can perform this action.");
+        require(msg.sender == sender, "Only the sender can perform this action.");
         _;
     }
 
     modifier onlyReceiver() {
-        require(msg.sender === receiver, "Only the receiver can perform this action.");
+        require(msg.sender == receiver, "Only the receiver can perform this action.");
         _;
     }
 
     // Functions
     function registerCompany() public {}
 
-    function addCargo() public {}
+    function addCargo(string memory _sender, 
+                    string memory _receiver, 
+                    string memory _material, 
+                    uint256 materialCount, 
+                    uint256 materialCost,
+                    string memory _specialInstructions
+                    
+    ) public {
+        Cargo memory newCargo = Cargo(_sender, _receiver, _material, materialCount, materialCost, _specialInstructions);
+        // emit cargoCreated(msg.sender);
+    }
 
     function shipmentDetails(uint256 _cargoId) public view returns(string memory _sender, string memory _receiver){
         Cargo memory cargo = cargoId[_cargoId];
@@ -144,4 +139,13 @@ contract Shipping {
         // is the same as deliveryDestination
 
     }
+
+    // function paymentSent() public {
+    //     require(isReceived=true, "item has arrived at destination");
+    //     require(address(this).balance >= paymentAmount, "Insufficient balance to make the payment"); 
+    //     (bool success, ) = seller.call{value: shippingCost}(""); 
+    //     require(success, "Payment transfer failed"); 
+    //     emit PaymentSent();
+        
+    // }
 }
