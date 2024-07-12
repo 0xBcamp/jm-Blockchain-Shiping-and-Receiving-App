@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
+import '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/access/AccessControl.sol';
+
 contract Shipping {
 
     enum Status {
@@ -139,6 +142,9 @@ contract Shipping {
         // is the same as deliveryDestination
 
     }
+
+    //Updating Status Enums for cargo structs and BOL
+
 
     // function paymentSent() public {
     //     require(isReceived=true, "item has arrived at destination");
