@@ -4,6 +4,8 @@ pragma solidity ^0.8.18;
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/access/AccessControl.sol';
 
+// 0x37f015808b35fCf45D19781E96380E486B75Bc64
+
 contract Shipping is Ownable {
 
     enum Status {
@@ -60,7 +62,7 @@ contract Shipping is Ownable {
 	//event to broadcast that cargo has been received
 	event cargoReceived(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
 	//event to update that the order location has been updated
-	event updatedLocation();
+	event updatedLocation(address indexed _sender, string _currentLocation, string _finalDestination);
 	//event to broadcast that a bill of lading has been created
 	event billOfLandingCreated();
 	//event to broadcast that a bill of lading has been updated
@@ -160,8 +162,6 @@ contract Shipping is Ownable {
                     string memory _specialInstructions,
                     string memory _finalDestination               
     ) external returns(uint256){
-        // Cargo memory newCargo = Cargo(_sender, _receiver, _material, materialCount, materialCost, _specialInstructions);
-        // // emit cargoCreated(msg.sender);
         Cargo memory newCargo = Cargo({
             sender: _sender,
             receiver: _receiver,
@@ -191,9 +191,10 @@ contract Shipping is Ownable {
     // }
 
     // To check the item's current location
-    function updateLocation(string memory _currentLocation, uint256 _cargoId) external onlySender(_cargoId) {
-        // call confirmReceipt function to see if the item has arrived or not
-
+    function updateLocation(string memory _currentLocation, uint256 _cargoId) external onlySender(_cargoId){
+        require(cargos[_cargoId].deliveryStatus == Status.Shipping, "Delievery status must be in Pending state to ship");
+        cargos[_cargoId].currentLocation = _currentLocation;
+        emit updatedLocation(msg.sender, cargos[_cargoId].currentLocation, cargos[_cargoId].finalDestination);
     }
 
     // Checking if item has been shipped
