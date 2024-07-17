@@ -8,6 +8,7 @@ import '@openzeppelin/contracts/access/AccessControl.sol';
 
 contract Shipping is Ownable {
 
+    // ALL ENUMS
     enum Status {
         Pending,
         Shipping,
@@ -16,7 +17,15 @@ contract Shipping is Ownable {
         Canceled
     }
 
-    //Structs
+    enum TransactionRole{
+        sender,
+        receiver
+    }
+
+    // ENUM CODE ENDS
+
+    //ALL STRUCTS
+
     //a customized data structure for bill of lading
     struct Billoflanding {
         uint256 orderId;
@@ -27,24 +36,18 @@ contract Shipping is Ownable {
     }
     
     //a customized data structure for company
-    // @name::string
-    // @email::string      
-    // @phoneno::uint256  
-    // @website::string
-    // @address::string  
-    // Struct company{}
-    // struct Company {
-    //     string name;
-    //     string email;
-    //     uint256 phoneNo;
-    //     string website;
-    //     string companyAddress;
-    // }
+    struct Company {
+        string name;
+        string email;
+        uint256 phoneNo;
+        string website;
+        string companyAddress;
+    }
 
     // a customized data structure for cargo
     struct Cargo {
         address sender;
-        address receiver;
+        address receiver;   
         string currentLocation;
         string material;
         uint256 materialCount;
@@ -54,7 +57,10 @@ contract Shipping is Ownable {
         Status deliveryStatus;
     }
 
-    //Events	
+    // STRUCT CODE ENDS
+
+    //ALL EVENTS 
+
 	//event to broadcast that cargo have been created
 	event cargoCreated(address indexed _sender, address _receiver, string _material, uint256 _materialCount);
 	//event to broadcast that cargo has been shipped
@@ -64,15 +70,21 @@ contract Shipping is Ownable {
 	//event to update that the order location has been updated
 	event updatedLocation(address indexed _sender, string _currentLocation, string _finalDestination);
 	//event to broadcast that a bill of lading has been created
-	event billOfLandingCreated();
+	event billOfLandingCreated(uint256 _orderId);
 	//event to broadcast that a bill of lading has been updated
-	event billOfLandingUpdated();
+	event billOfLandingUpdated(uint256 _orderId);
 	//event to broadcast that payment has been made
-	event payment();
-	// 
-	event itemShipped(address indexed _sender);
+	event payment(address _sender, address _receiver, uint256 _orderId);
+    
+    //event to braodcast that widthdrawal is made
+    event withdrawal(address _owner);
 
-    //Variables
+
+    //EVENT CODE ENDS
+
+    //ALL VARIABLES
+    TransactionRole senderRole = TransactionRole.sender;
+    TransactionRole receiverRole = TransactionRole.receiver
     /* address sender; //the msg.sender
     address receiver; //the receiver address
 	string deliveryDestination; //the delivery destination of the order
@@ -80,24 +92,34 @@ contract Shipping is Ownable {
 	bool isShipped; //A boolean to check if the order has been shipped
 	bool isReceived; //A boolean to check if the order has been received
     string currentLocation; //A boolean to get the currentLocation of the order */
+    Status status;
     Cargo[] cargos;
 
-    //Mappings
+    //VARIABLE CODE ENDS
 
-	//A mapping to return the past orderId of a company
-	mapping(address  => uint256[]) private companyHistory;
+
+
+    //ALL MAPPINGS
+
+	//A mapping to return the transaction history of a particular company
+	mapping(address  =>(mapping(TransactionRole senderRole => uint256[]),
+    mapping(TransactionRole receiver => uint256[]))) private companyTransactionHistory;
 
 	//A mapping to return the details of a companyData
-	// mapping(address => Company) public companyInfo;
+	mapping(address => Company) public companyInfo;
 	
-	//A mapping to return the order of a particular orderId ??
-	// mapping(uint256 => Order) public orderId;
+	//A mapping to return the Cargo and it BillofLading for a particular orderId ??
+	mapping(uint256 => (Cargo, Billoflading)) public orderId;
+
+    // A mapping to return the bill of landing Id
     mapping (uint256 => Billoflanding) public bolId;
-    // mapping (uint256 => Cargo) public cargoId;
+
     mapping (address => mapping (uint256 => bool)) private SenderRole;
     mapping (address => mapping (uint256 => bool)) private ReceiverRole;
 
-    //Modifiers
+    // MAPPINGS CODE BLOCKS ENDS
+
+    //ALL MODIFIERS
     modifier onlyReceiver(uint256 _cargoId) {
         require(ReceiverRole[msg.sender][_cargoId], "Address not Authorized Reciever for this CargoID");
         _;
@@ -108,12 +130,26 @@ contract Shipping is Ownable {
         _;
     }
 
-    // Constructor
+    // MODIFIER CODE BLOCK ENDS
+
+    // CONSTRUCTOR 
+
     constructor() Ownable(msg.sender){
+        status = Status.Pending;
         
     }
 
-    // Functions
+    // ALL FUNCTIONS 
+
+    function payment() payable {
+
+    }
+
+    function widthdrawal() payable{
+
+    }
+
+
     function addReceiverRole(address roleRecipient, uint256 roleCargoId) internal onlyOwner returns(bool){
         ReceiverRole[roleRecipient][roleCargoId] = true;
         return ReceiverRole[roleRecipient][roleCargoId];
