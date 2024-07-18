@@ -84,7 +84,7 @@ contract Shipping is Ownable {
 
     //ALL VARIABLES
     TransactionRole senderRole = TransactionRole.sender;
-    TransactionRole receiverRole = TransactionRole.receiver;
+    TransactionRole receiverRole = TransactionRole.receiver
     /* address sender; //the msg.sender
     address receiver; //the receiver address
 	string deliveryDestination; //the delivery destination of the order
@@ -113,6 +113,9 @@ contract Shipping is Ownable {
 
     // A mapping to return the bill of landing Id
     mapping (uint256 => Billoflanding) public bolId;
+    
+    //A mapping to return the location of the cargo
+    mapping(uint256 => string) public location
 
     mapping (address => mapping (uint256 => bool)) private SenderRole;
     mapping (address => mapping (uint256 => bool)) private ReceiverRole;
@@ -130,6 +133,11 @@ contract Shipping is Ownable {
         _;
     }
 
+    modifier onlyTransactionParty(uint256 _cargoId){
+        require(ReceiverRole[msg.sender][_cargoId])
+        _;
+    }
+
     // MODIFIER CODE BLOCK ENDS
 
     // CONSTRUCTOR 
@@ -139,15 +147,29 @@ contract Shipping is Ownable {
         
     }
 
-    // ALL FUNCTIONS 
+    // ALL FUNCTIONS
 
-    function payment() payable {
+    // payment related function  
+
+    function payment(uint256 _amount) payable {
+
 
     }
 
-    function widthdrawal() payable{
+    function widthdrawal(uint256 _amount) payable{
 
     }
+
+    function fallback(){
+
+    }
+
+    function receive(){
+
+    }
+
+
+    // shipping process related functions
 
 
     function addReceiverRole(address roleRecipient, uint256 roleCargoId) internal onlyOwner returns(bool){
@@ -187,7 +209,19 @@ contract Shipping is Ownable {
         return cargos[_cargoId].deliveryStatus;
     }
 
-    function registerCompany() public {}
+    function registerCompany(string _name, 
+            string _email, 
+            string _phoneNo,
+            string _website,
+            string _companyaddress
+             ) public {
+
+              Company memory company = new Company(_name, _email, _phoneNo, _website, _companyaddress)
+
+              companyInfo[msg.sender] = company;
+
+
+    }
 
     function addCargo(address _sender, 
                     address _receiver, 
@@ -258,4 +292,20 @@ contract Shipping is Ownable {
     //     emit PaymentSent();
         
     // }
+
+
+
+    // RETURN FUNCTIONS
+
+    function getBillOfLading(_id) public pure returns (memory Billoflading){
+        return bolId[_id];
+
+
+    }
+
+    function getLatestLocation(uint256 _id) public pure returns (memory string){
+        return location[_id];
+    }
+
+
 }
