@@ -84,7 +84,7 @@ contract Shipping is Ownable {
 
     //ALL VARIABLES
     TransactionRole senderRole = TransactionRole.sender;
-    TransactionRole receiverRole = TransactionRole.receiver
+    TransactionRole receiverRole = TransactionRole.receiver;
     /* address sender; //the msg.sender
     address receiver; //the receiver address
 	string deliveryDestination; //the delivery destination of the order
