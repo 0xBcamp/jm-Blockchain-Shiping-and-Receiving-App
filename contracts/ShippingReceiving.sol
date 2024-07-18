@@ -17,22 +17,22 @@ contract Shipping is Ownable {
         Canceled
     }
 
-    enum TransactionRole{
-        sender,
-        receiver
-    }
+    // enum TransactionRole{
+    //     sender,
+    //     receiver
+    // }
 
     // ENUM CODE ENDS
 
     //ALL STRUCTS
 
     //a customized data structure for bill of lading
-    struct Billoflanding {
+    struct Cargo {
         uint256 orderId;
         address senderOfGoods;
         address receiverOfBill;
         Status deliveryStatus; 
-        Cargo[] cargoIds;
+        uint256[] bolIDs;
     }
     
     //a customized data structure for company
@@ -45,7 +45,7 @@ contract Shipping is Ownable {
     }
 
     // a customized data structure for cargo
-    struct Cargo {
+    struct Billoflanding {
         address sender;
         address receiver;   
         string currentLocation;
@@ -83,8 +83,8 @@ contract Shipping is Ownable {
     //EVENT CODE ENDS
 
     //ALL VARIABLES
-    TransactionRole senderRole = TransactionRole.sender;
-    TransactionRole receiverRole = TransactionRole.receiver;
+    // TransactionRole senderRole = TransactionRole.sender;
+    // TransactionRole receiverRole = TransactionRole.receiver;
     /* address sender; //the msg.sender
     address receiver; //the receiver address
 	string deliveryDestination; //the delivery destination of the order
@@ -92,8 +92,8 @@ contract Shipping is Ownable {
 	bool isShipped; //A boolean to check if the order has been shipped
 	bool isReceived; //A boolean to check if the order has been received
     string currentLocation; //A boolean to get the currentLocation of the order */
-    Status status;
-    Cargo[] cargos;
+    // Status status;
+    Billoflanding[] bols;
 
     //VARIABLE CODE ENDS
 
@@ -102,14 +102,14 @@ contract Shipping is Ownable {
     //ALL MAPPINGS
 
 	//A mapping to return the transaction history of a particular company
-	mapping(address  =>(mapping(TransactionRole senderRole => uint256[]),
-    mapping(TransactionRole receiver => uint256[]))) private companyTransactionHistory;
+	// mapping(address  =>(mapping(TransactionRole senderRole => uint256[]),
+    // mapping(TransactionRole receiver => uint256[]))) private companyTransactionHistory;
 
 	//A mapping to return the details of a companyData
 	mapping(address => Company) public companyInfo;
 	
 	//A mapping to return the Cargo and it BillofLading for a particular orderId ??
-	mapping(uint256 => (Cargo, Billoflading)) public orderId;
+	// mapping(uint256 => (Cargo, Billoflading)) public orderId;
 
     // A mapping to return the bill of landing Id
     mapping (uint256 => Billoflanding) public bolId;
@@ -120,13 +120,13 @@ contract Shipping is Ownable {
     // MAPPINGS CODE BLOCKS ENDS
 
     //ALL MODIFIERS
-    modifier onlyReceiver(uint256 _cargoId) {
-        require(ReceiverRole[msg.sender][_cargoId], "Address not Authorized Reciever for this CargoID");
+    modifier onlyReceiver(uint256 _bolId) {
+        require(ReceiverRole[msg.sender][_bolId], "Address not Authorized Reciever for this Bill of Landing ID");
         _;
     }
 
-    modifier onlySender(uint256 _cargoId) {
-        require(SenderRole[msg.sender][_cargoId], "Address not Authorized Sender for this CargoID");
+    modifier onlySender(uint256 _bolId) {
+        require(SenderRole[msg.sender][_bolId], "Address not Authorized Sender for this Bill of Landing ID");
         _;
     }
 
@@ -135,19 +135,19 @@ contract Shipping is Ownable {
     // CONSTRUCTOR 
 
     constructor() Ownable(msg.sender){
-        status = Status.Pending;
+        // status = Status.Pending;
         
     }
 
     // ALL FUNCTIONS 
 
-    function payment() payable {
+    /* function payment() external payable {
 
     }
 
-    function widthdrawal() payable{
+    function widthdrawal() external payable{
 
-    }
+    } */
 
 
     function addReceiverRole(address roleRecipient, uint256 roleCargoId) internal onlyOwner returns(bool){
@@ -160,36 +160,36 @@ contract Shipping is Ownable {
         return SenderRole[roleRecipient][roleCargoId];
     }
 
-    function shipCargo(uint256 _cargoId) external onlySender(_cargoId) returns(Status){
-        require(cargos[_cargoId].deliveryStatus == Status.Pending, "Delievery status must be in Pending state to ship");
-        cargos[_cargoId].deliveryStatus = Status.Shipping;
-        return cargos[_cargoId].deliveryStatus;
+    function shipCargo(uint256 _bolId) external onlySender(_bolId) returns(Status){
+        require(bols[_bolId].deliveryStatus == Status.Pending, "Delievery status must be in Pending state to ship");
+        bols[_bolId].deliveryStatus = Status.Shipping;
+        return bols[_bolId].deliveryStatus;
     }
 
-    function acceptCargo(uint256 _cargoId) external onlyReceiver(_cargoId) returns(Status){
-        require(cargos[_cargoId].deliveryStatus == Status.Shipping, "Delievery status must be in Shipping state to ship");
-        require(keccak256(abi.encodePacked(cargos[_cargoId].finalDestination)) == keccak256(abi.encodePacked(cargos[_cargoId].currentLocation)), "Current location of cargo must be at final destination to accept");
-        cargos[_cargoId].deliveryStatus = Status.Accepted;
-        return cargos[_cargoId].deliveryStatus;
+    function acceptCargo(uint256 _bolId) external onlyReceiver(_bolId) returns(Status){
+        require(bols[_bolId].deliveryStatus == Status.Shipping, "Delievery status must be in Shipping state to ship");
+        require(keccak256(abi.encodePacked(bols[_bolId].finalDestination)) == keccak256(abi.encodePacked(bols[_bolId].currentLocation)), "Current location of cargo must be at final destination to accept");
+        bols[_bolId].deliveryStatus = Status.Accepted;
+        return bols[_bolId].deliveryStatus;
     }
 
-    function rejectCargo(uint256 _cargoId) external onlyReceiver(_cargoId) returns(Status){
-        require(cargos[_cargoId].deliveryStatus == Status.Shipping, "Delievery status must be in Shipping state to ship");
-        require(keccak256(abi.encodePacked(cargos[_cargoId].finalDestination)) == keccak256(abi.encodePacked(cargos[_cargoId].currentLocation)), "Current location of cargo must be at final destination to reject");
-        cargos[_cargoId].deliveryStatus = Status.Rejected;
-        return cargos[_cargoId].deliveryStatus;
+    function rejectCargo(uint256 _bolId) external onlyReceiver(_bolId) returns(Status){
+        require(bols[_bolId].deliveryStatus == Status.Shipping, "Delievery status must be in Shipping state to ship");
+        require(keccak256(abi.encodePacked(bols[_bolId].finalDestination)) == keccak256(abi.encodePacked(bols[_bolId].currentLocation)), "Current location of cargo must be at final destination to reject");
+        bols[_bolId].deliveryStatus = Status.Rejected;
+        return bols[_bolId].deliveryStatus;
     }
 
-    function cancelCargo(uint256 _cargoId) external onlyReceiver(_cargoId) returns(Status){
-        require(cargos[_cargoId].deliveryStatus != Status.Accepted || cargos[_cargoId].deliveryStatus != Status.Rejected, "Delievery cannot be accepted or rejected in order to cancel");
-        require(keccak256(abi.encodePacked(cargos[_cargoId].finalDestination)) != keccak256(abi.encodePacked(cargos[_cargoId].currentLocation)), "Current location of cargo cannot be at final destination to cancel");
-        cargos[_cargoId].deliveryStatus = Status.Canceled;
-        return cargos[_cargoId].deliveryStatus;
+    function cancelCargo(uint256 _bolId) external onlyReceiver(_bolId) returns(Status){
+        require(bols[_bolId].deliveryStatus != Status.Accepted || bols[_bolId].deliveryStatus != Status.Rejected, "Delievery cannot be accepted or rejected in order to cancel");
+        require(keccak256(abi.encodePacked(bols[_bolId].finalDestination)) != keccak256(abi.encodePacked(bols[_bolId].currentLocation)), "Current location of cargo cannot be at final destination to cancel");
+        bols[_bolId].deliveryStatus = Status.Canceled;
+        return bols[_bolId].deliveryStatus;
     }
 
     function registerCompany() public {}
 
-    function addCargo(address _sender, 
+    function addBillofLanding(address _sender, 
                     address _receiver, 
                     string memory _currentLocation,
                     string memory _material, 
@@ -198,7 +198,7 @@ contract Shipping is Ownable {
                     string memory _specialInstructions,
                     string memory _finalDestination               
     ) external returns(uint256){
-        Cargo memory newCargo = Cargo({
+        Billoflanding memory newBol = Billoflanding({
             sender: _sender,
             receiver: _receiver,
             currentLocation: _currentLocation,
@@ -210,13 +210,13 @@ contract Shipping is Ownable {
             deliveryStatus: Status.Pending
         });
 
-        cargos.push(newCargo);
-        uint256 cargoId = cargos.length - 1;
+        bols.push(newBol);
+        uint256 cargoId = bols.length - 1;
 
-        addSenderRole(newCargo.sender, cargoId);
-        addReceiverRole(newCargo.receiver, cargoId);
+        addSenderRole(newBol.sender, cargoId);
+        addReceiverRole(newBol.receiver, cargoId);
 
-        emit cargoCreated(newCargo.sender, newCargo.receiver, newCargo.material, newCargo.materialCount);
+        emit cargoCreated(newBol.sender, newBol.receiver, newBol.material, newBol.materialCount);
 
         return cargoId;
     }
@@ -228,9 +228,9 @@ contract Shipping is Ownable {
 
     // To check the item's current location
     function updateLocation(string memory _currentLocation, uint256 _cargoId) external onlySender(_cargoId){
-        require(cargos[_cargoId].deliveryStatus == Status.Shipping, "Delievery status must be in Pending state to ship");
-        cargos[_cargoId].currentLocation = _currentLocation;
-        emit updatedLocation(msg.sender, cargos[_cargoId].currentLocation, cargos[_cargoId].finalDestination);
+        require(bols[_cargoId].deliveryStatus == Status.Shipping, "Delievery status must be in Pending state to ship");
+        bols[_cargoId].currentLocation = _currentLocation;
+        emit updatedLocation(msg.sender, bols[_cargoId].currentLocation, bols[_cargoId].finalDestination);
     }
 
     // Checking if item has been shipped
