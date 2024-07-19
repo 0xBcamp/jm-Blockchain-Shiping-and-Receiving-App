@@ -45,7 +45,7 @@ contract Shipping is Ownable {
     }
 
     // a customized data structure for cargo
-    struct Billoflanding {
+    struct Billoflading {
         address sender;
         address receiver;   
         string currentLocation;
@@ -147,22 +147,30 @@ contract Shipping is Ownable {
 
     // payment related function  
 
-    function payment(uint256 _amount) payable {
+    function fundMe() public payable{
+
+    }
+
+    function transferAmount(address _to, uint256 _amount) public payable {
 
 
     }
 
-    function widthdrawal(uint256 _amount) payable{
+    function widthdrawAmount(uint256 _amount) public payable{
 
     }
 
-    function fallback() payable{
+    
+    // Custom Error functions 
+    receive() external payable{
+        fundMe();
+    }
+    fallback() external payable{
+        fundMe();
 
     }
 
-    function receive() payable{
-
-    }
+    // Custom Error function ends
 
 
     function addReceiverRole(address roleRecipient, uint256 roleCargoId) internal onlyOwner returns(bool){
@@ -202,14 +210,20 @@ contract Shipping is Ownable {
         return bols[_bolId].deliveryStatus;
     }
 
-    function registerCompany(string _name, 
-            string _email, 
-            string _phoneNo,
-            string _website,
-            string _companyaddress
+    function registerCompany(string memory _name, 
+            string memory _email, 
+            uint256 _phoneNo,
+            string memory _website,
+            string memory _companyaddress
              ) public {
 
-              Company memory company = new Company(_name, _email, _phoneNo, _website, _companyaddress);
+              Company memory company = Company({
+                name: _name,
+                email: _email,
+                phoneNo: _phoneNo,
+                website: _website,
+                companyAddress: _companyaddress
+              });
 
               companyInfo[msg.sender] = company;
 
@@ -225,7 +239,7 @@ contract Shipping is Ownable {
                     string memory _specialInstructions,
                     string memory _finalDestination               
     ) external returns(uint256){
-        Billoflanding memory newBol = Billoflanding({
+        Billoflading memory newBol = Billoflading({
             sender: _sender,
             receiver: _receiver,
             currentLocation: _currentLocation,
@@ -290,13 +304,13 @@ contract Shipping is Ownable {
 
     // RETURN FUNCTIONS
 
-    function getBillOfLading(_id) public pure returns (Billoflading memory){
+    function getBillOfLading(uint256 _id) public view returns (Billoflading memory){
         return bolId[_id];
 
 
     }
 
-    function getLatestLocation(uint256 _id) public pure returns (string memory){
+    function getLatestLocation(uint256 _id) public view returns (string memory){
         return location[_id];
     }
 
