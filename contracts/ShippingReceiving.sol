@@ -266,26 +266,14 @@ contract Shipping is Ownable {
         return cargoId;
     }
 
-    // function shipmentDetails(uint256 _cargoId) public view returns(string memory _sender, string memory _receiver){
-    //     Cargo memory cargo = cargoId[_cargoId];
-    //     return (cargo.sender, cargo.receiver);
-    // }
-
-    // To check the item's current location
+    
     function updateLocation(string memory _currentLocation, uint256 _cargoId) external onlyTransporter(_cargoId){
         require(bols[_cargoId].deliveryStatus == Status.Shipping, "Delievery status must be in Pending state to ship");
         bols[_cargoId].currentLocation = _currentLocation;
         emit updatedLocation(msg.sender, bols[_cargoId].currentLocation, bols[_cargoId].finalDestination);
     }
 
-    // Checking if item has been shipped
-    // function shipItem() public {
-    //     require(!isShipped, "Item has been shipped");
-    //     isShipped = true;
-    //     emit itemShipped(msg.sender);
-    // }
-
-    // Checking if the receiver's item has arrived or not
+    
     function confirmReceipt() public {
         // Might need currentLocaton to check if the item's currentLocation 
         // is the same as deliveryDestination
