@@ -137,7 +137,7 @@ contract Shipping is Ownable {
     // CONSTRUCTOR 
 
     constructor() Ownable(msg.sender){
-        status = Status.Pending;
+        
         
     }
 
@@ -174,7 +174,7 @@ contract Shipping is Ownable {
     }
 
     function shipCargo(uint256 _bolId) external onlySender(_bolId) returns(Status){
-        require(bols[_bolId].deliveryStatus == status, "Delievery status must be in Pending state to ship");
+        require(bols[_bolId].deliveryStatus == Status.Pending, "Delievery status must be in Pending state to ship");
         bols[_bolId].deliveryStatus = Status.Shipping;
         return bols[_bolId].deliveryStatus;
     }
