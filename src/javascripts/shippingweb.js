@@ -41,4 +41,3 @@ function openShipHistory(){
     shipHistoryDiv.classList.add('active');
     historyOptionDiv.classList.add('clicked');
 }
-
