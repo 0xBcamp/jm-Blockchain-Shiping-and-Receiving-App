@@ -17,7 +17,7 @@ contract Shipping is Ownable {
         Canceled
     }
 
-     enum TransactionRole{
+     enum TransactionRole {
         sender,
         receiver
     }
