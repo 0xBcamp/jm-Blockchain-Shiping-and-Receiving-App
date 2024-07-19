@@ -45,7 +45,7 @@ contract Shipping is Ownable {
     }
 
     // a customized data structure for cargo
-    struct Billoflanding {
+    struct Billoflading {
         address sender;
         address receiver;   
         string currentLocation;
@@ -67,6 +67,10 @@ contract Shipping is Ownable {
 	event cargoShipped(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
 	//event to broadcast that cargo has been received
 	event cargoReceived(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
+    // event to broadcast that cargo has been rejected
+    event rejectedCargo(uint256 _cargoId);
+    // event to update that the cargo was cancelled
+    event cancelledCargo(uint256 _cargoId);
 	//event to update that the order location has been updated
 	event updatedLocation(address indexed _sender, string _currentLocation, string _finalDestination);
 	//event to broadcast that a bill of lading has been created
@@ -115,6 +119,9 @@ contract Shipping is Ownable {
     mapping (address => mapping (uint256 => bool)) private SenderRole;
     mapping (address => mapping (uint256 => bool)) private ReceiverRole;
 
+    // A mapping to return the company transporting the goods
+    mapping(uint256 => address) public transporter;
+
     // MAPPINGS CODE BLOCKS ENDS
 
 
@@ -129,8 +136,8 @@ contract Shipping is Ownable {
         _;
     }
 
-    modifier onlyTransactionParty(uint256 _cargoId){
-        require(ReceiverRole[msg.sender][_cargoId]);
+    modifier onlyTransporter(uint256 _cargoId){
+        require(msg.sender == transporter[_cargoId]);
         _;
     }
 
@@ -147,24 +154,34 @@ contract Shipping is Ownable {
 
     // payment related function  
 
-    function payment(uint256 _amount) payable {
+    function fundMe() public payable{
+
+    }
+
+    function transferAmount(address _to, uint256 _amount) public payable {
 
 
     }
 
-    function widthdrawal(uint256 _amount) payable{
+    function widthdrawAmount(uint256 _amount) public payable{
 
     }
 
-    function fallback() payable{
+    
+    // Custom Error functions 
+    receive() external payable{
+        fundMe();
+    }
+    fallback() external payable{
+        fundMe();
 
     }
 
-    function receive() payable{
-
-    }
+    // Custom Error function ends
 
 
+
+    // Shipping Functions Begins
     function addReceiverRole(address roleRecipient, uint256 roleCargoId) internal onlyOwner returns(bool){
         ReceiverRole[roleRecipient][roleCargoId] = true;
         return ReceiverRole[roleRecipient][roleCargoId];
@@ -175,9 +192,12 @@ contract Shipping is Ownable {
         return SenderRole[roleRecipient][roleCargoId];
     }
 
-    function shipCargo(uint256 _bolId) external onlySender(_bolId) returns(Status){
+    function shipCargo(uint256 _bolId, address _transporter) external onlySender(_bolId) returns(Status){
         require(bols[_bolId].deliveryStatus == Status.Pending, "Delievery status must be in Pending state to ship");
         bols[_bolId].deliveryStatus = Status.Shipping;
+        transporter[_bolId] = _transporter;
+
+        
         return bols[_bolId].deliveryStatus;
     }
 
@@ -185,6 +205,7 @@ contract Shipping is Ownable {
         require(bols[_bolId].deliveryStatus == Status.Shipping, "Delievery status must be in Shipping state to ship");
         require(keccak256(abi.encodePacked(bols[_bolId].finalDestination)) == keccak256(abi.encodePacked(bols[_bolId].currentLocation)), "Current location of cargo must be at final destination to accept");
         bols[_bolId].deliveryStatus = Status.Accepted;
+
         return bols[_bolId].deliveryStatus;
     }
 
@@ -192,6 +213,8 @@ contract Shipping is Ownable {
         require(bols[_bolId].deliveryStatus == Status.Shipping, "Delievery status must be in Shipping state to ship");
         require(keccak256(abi.encodePacked(bols[_bolId].finalDestination)) == keccak256(abi.encodePacked(bols[_bolId].currentLocation)), "Current location of cargo must be at final destination to reject");
         bols[_bolId].deliveryStatus = Status.Rejected;
+
+        emit rejectedCargo(_bolId);
         return bols[_bolId].deliveryStatus;
     }
 
@@ -199,17 +222,25 @@ contract Shipping is Ownable {
         require(bols[_bolId].deliveryStatus != Status.Accepted || bols[_bolId].deliveryStatus != Status.Rejected, "Delievery cannot be accepted or rejected in order to cancel");
         require(keccak256(abi.encodePacked(bols[_bolId].finalDestination)) != keccak256(abi.encodePacked(bols[_bolId].currentLocation)), "Current location of cargo cannot be at final destination to cancel");
         bols[_bolId].deliveryStatus = Status.Canceled;
+
+        emit cancelledCargo(_bolId);
         return bols[_bolId].deliveryStatus;
     }
 
-    function registerCompany(string _name, 
-            string _email, 
-            string _phoneNo,
-            string _website,
-            string _companyaddress
+    function registerCompany(string memory _name, 
+            string memory _email, 
+            uint256 _phoneNo,
+            string memory _website,
+            string memory _companyaddress
              ) public {
 
-              Company memory company = new Company(_name, _email, _phoneNo, _website, _companyaddress);
+              Company memory company = Company({
+                name: _name,
+                email: _email,
+                phoneNo: _phoneNo,
+                website: _website,
+                companyAddress: _companyaddress
+              });
 
               companyInfo[msg.sender] = company;
 
@@ -225,7 +256,7 @@ contract Shipping is Ownable {
                     string memory _specialInstructions,
                     string memory _finalDestination               
     ) external returns(uint256){
-        Billoflanding memory newBol = Billoflanding({
+        Billoflading memory newBol = Billoflading({
             sender: _sender,
             receiver: _receiver,
             currentLocation: _currentLocation,
@@ -248,55 +279,36 @@ contract Shipping is Ownable {
         return cargoId;
     }
 
-    // function shipmentDetails(uint256 _cargoId) public view returns(string memory _sender, string memory _receiver){
-    //     Cargo memory cargo = cargoId[_cargoId];
-    //     return (cargo.sender, cargo.receiver);
-    // }
-
-    // To check the item's current location
-    function updateLocation(string memory _currentLocation, uint256 _cargoId) external onlySender(_cargoId){
+   
+    function updateLocation(string memory _currentLocation, uint256 _cargoId) external onlyTransporter(_cargoId){
         require(bols[_cargoId].deliveryStatus == Status.Shipping, "Delievery status must be in Pending state to ship");
         bols[_cargoId].currentLocation = _currentLocation;
         emit updatedLocation(msg.sender, bols[_cargoId].currentLocation, bols[_cargoId].finalDestination);
     }
 
-    // Checking if item has been shipped
-    // function shipItem() public {
-    //     require(!isShipped, "Item has been shipped");
-    //     isShipped = true;
-    //     emit itemShipped(msg.sender);
-    // }
-
-    // Checking if the receiver's item has arrived or not
+    
     function confirmReceipt() public {
         // Might need currentLocaton to check if the item's currentLocation 
         // is the same as deliveryDestination
 
     }
 
-    //Updating Status Enums for cargo structs and BOL
+    
 
 
-    // function paymentSent() public {
-    //     require(isReceived=true, "item has arrived at destination");
-    //     require(address(this).balance >= paymentAmount, "Insufficient balance to make the payment"); 
-    //     (bool success, ) = seller.call{value: shippingCost}(""); 
-    //     require(success, "Payment transfer failed"); 
-    //     emit PaymentSent();
-        
-    // }
+    
 
 
 
     // RETURN FUNCTIONS
 
-    function getBillOfLading(_id) public pure returns (Billoflading memory){
+    function getBillOfLading(uint256 _id) public view returns (Billoflading memory){
         return bolId[_id];
 
 
     }
 
-    function getLatestLocation(uint256 _id) public pure returns (string memory){
+    function getLatestLocation(uint256 _id) public view returns (string memory){
         return location[_id];
     }
 

@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/homepage.09ded6e8.css">
+    <link rel="stylesheet" href="/shipping.d616203b.css">
+    <script src="/shipping.e3e016c1.js"></script>
+    <title>Shipping and Receiving App</title>
+</head>
+<body>
+    <img src="/mountain-scenery.fd69a772.png" alt="mountain-scenery img" style="width: 100%; height: auto; position: absolute">
+    <header>
+        <nav class="nav-bar shippingnav-bar">
+            <h3><a href="/homepage.html">Shipping and Receiving App</a></h3>
+            <div class="right-nav-bar">
+                <h3 style="padding-right: 20px"><a href="/shipping.html">Ship Delivery</a></h3>
+                <button id="connect-btn" class="connect-btn">
+                    Connect Wallet
+                    <span id="is-connected-value"></span>
+                    <span id="address-value"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <div class="shippingpage-layout">
+        <nav class="sidebar">
+            <ul>
+                <li>
+                    <p style="margin-bottom: 0">Menu</p>
+                    <h4>View Shipping Options</h4>
+                </li>
+                <hr class="solid-separator">
+
+                <li id="addOption" class="optionStatus clicked">
+                    <button onclick="openAddCargo()">
+                        <h4>Add and Ship Cargo</h4>
+                    </button>
+                    <p>Create order</p>
+                </li>
+
+                <li id="updateOption" class="optionStatus">
+                    <button onclick="openUpdateLocation()">
+                        <h4>Update Location</h4>
+                    </button>
+                    <p>Change order's current location</p>
+                </li>
+
+                <li id="historyOption" class="optionStatus">
+                    <button onclick="openShipHistory()">
+                        <h4>Shipping History</h4>
+                    </button>
+                    <p>All your shipping reports is recorded here</p>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="content-bar">
+            <div id="addCargo-content" class="content-style active">
+                <h3>Add Cargo Information</h3>
+                <div class="addform-input">
+                    <h5>Sender</h5>
+                    <input id="" type="text" placeholder="Enter crypto address">
+                    
+                    <h5>Receiver</h5>
+                    <input id="" type="text" placeholder="Enter crypto address">
+
+                    <h5>Current Location</h5>
+                    <input id="" type="text" placeholder="Enter city name">
+
+                    <h5>Material</h5>
+                    <input id="" type="text" placeholder="Enter items(s)">
+
+                    <h5>Quantity</h5>
+                    <input id="" type="text" placeholder="Enter number">
+
+                    <h5>Cost</h5>
+                    <input type="number" name="" id="" placeholder="Enter value of material">
+
+                    <h5>Special Instructions</h5>
+                    <input id="" type="text" placeholder="Enter any instructions">
+
+                    <h5>Final Location</h5>
+                    <input id="" type="text" placeholder="Enter city name">
+
+                    <button type="submit">Submit Info</button>
+                </div>
+
+                <div class="shippingform-input">
+                    <h3>Ship Cargo</h3>
+                    <h5 style="margin-bottom: 0">BOL #</h5>
+                    <input type="text" placeholder="Enter bill of Landing number">
+                    <button type="submit">Ship Cargo</button>
+                </div>
+            </div>
+            <div id="updateLocation-content" class="content-style">
+                <h3>Update Location of Cargo</h3>
+                <div class="updatesearch-input">
+                    <h5>Enter Bill of Landing ID*</h5>
+                    <input type="text">
+
+                    <h5>Wallet Address*</h5>
+                    <input type="text">
+
+                    <button type="submit">Search</button>
+                </div>
+
+                <hr style="border: 2px solid #000">
+
+                <div class="outputupdate-input">
+                    <h5>Search Result</h5>
+                    <span></span>
+
+                    <h5>New Location</h5>
+                    <input type="text">
+
+                    <h5>Reason for Update</h5>
+                    <input type="text">
+
+                    <button type="submit">Update</button>
+                </div>
+            </div>
+            <div id="shipHistory-content" class="content-style">
+                <h3>Shipping History</h3>
+
+                <div class="historyform-input">
+                    <div style="margin-right: 10px">
+                        <h5 style="margin: 0">Enter Bill of Landing ID</h5>
+                        <input type="text" style="width: 100%" placeholder="Enter Bill of Landing number">
+                    </div>
+                    <button type="submit" style="height: 40px">
+                        Search
+                    </button>
+                </div>
+
+                <span id="datatable-result"></span>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
+
+<script>// modules are defined as an array
+// [ module function, map of requires ]
+//
+// map of requires is short require name -> numeric require
+//
+// anything defined in a previous bundle is accessed via the
+// orig method which is the require for previous bundles
+
+(function (modules, entry, mainEntry, parcelRequireName, globalName) {
+  /* eslint-disable no-undef */
+  var globalObject =
+    typeof globalThis !== 'undefined'
+      ? globalThis
+      : typeof self !== 'undefined'
+      ? self
+      : typeof window !== 'undefined'
+      ? window
+      : typeof global !== 'undefined'
+      ? global
+      : {};
+  /* eslint-enable no-undef */
+
+  // Save the require from previous bundle to this closure if any
+  var previousRequire =
+    typeof globalObject[parcelRequireName] === 'function' &&
+    globalObject[parcelRequireName];
+
+  var cache = previousRequire.cache || {};
+  // Do not use `require` to prevent Webpack from trying to bundle this call
+  var nodeRequire =
+    typeof module !== 'undefined' &&
+    typeof module.require === 'function' &&
+    module.require.bind(module);
+
+  function newRequire(name, jumped) {
+    if (!cache[name]) {
+      if (!modules[name]) {
+        // if we cannot find the module within our internal map or
+        // cache jump to the current global require ie. the last bundle
+        // that was added to the page.
+        var currentRequire =
+          typeof globalObject[parcelRequireName] === 'function' &&
+          globalObject[parcelRequireName];
+        if (!jumped && currentRequire) {
+          return currentRequire(name, true);
+        }
+
+        // If there are other bundles on this page the require from the
+        // previous one is saved to 'previousRequire'. Repeat this as
+        // many times as there are bundles until the module is found or
+        // we exhaust the require chain.
+        if (previousRequire) {
+          return previousRequire(name, true);
+        }
+
+        // Try the node require function if it exists.
+        if (nodeRequire && typeof name === 'string') {
+          return nodeRequire(name);
+        }
+
+        var err = new Error("Cannot find module '" + name + "'");
+        err.code = 'MODULE_NOT_FOUND';
+        throw err;
+      }
+
+      localRequire.resolve = resolve;
+      localRequire.cache = {};
+
+      var module = (cache[name] = new newRequire.Module(name));
+
+      modules[name][0].call(
+        module.exports,
+        localRequire,
+        module,
+        module.exports,
+        this
+      );
+    }
+
+    return cache[name].exports;
+
+    function localRequire(x) {
+      var res = localRequire.resolve(x);
+      return res === false ? {} : newRequire(res);
+    }
+
+    function resolve(x) {
+      var id = modules[name][1][x];
+      return id != null ? id : x;
+    }
+  }
+
+  function Module(moduleName) {
+    this.id = moduleName;
+    this.bundle = newRequire;
+    this.exports = {};
+  }
+
+  newRequire.isParcelRequire = true;
+  newRequire.Module = Module;
+  newRequire.modules = modules;
+  newRequire.cache = cache;
+  newRequire.parent = previousRequire;
+  newRequire.register = function (id, exports) {
+    modules[id] = [
+      function (require, module) {
+        module.exports = exports;
+      },
+      {},
+    ];
+  };
+
+  Object.defineProperty(newRequire, 'root', {
+    get: function () {
+      return globalObject[parcelRequireName];
+    },
+  });
+
+  globalObject[parcelRequireName] = newRequire;
+
+  for (var i = 0; i < entry.length; i++) {
+    newRequire(entry[i]);
+  }
+
+  if (mainEntry) {
+    // Expose entry point to Node, AMD or browser globals
+    // Based on https://github.com/ForbesLindesay/umd/blob/master/template.js
+    var mainExports = newRequire(mainEntry);
+
+    // CommonJS
+    if (typeof exports === 'object' && typeof module !== 'undefined') {
+      module.exports = mainExports;
+
+      // RequireJS
+    } else if (typeof define === 'function' && define.amd) {
+      define(function () {
+        return mainExports;
+      });
+
+      // <script>
+    } else if (globalName) {
+      this[globalName] = mainExports;
+    }
+  }
+})({"jR4nV":[function(require,module,exports) {
+var global = arguments[3];
+var HMR_HOST = null;
+var HMR_PORT = null;
+var HMR_SECURE = false;
+var HMR_ENV_HASH = "d6ea1d42532a7575";
+var HMR_USE_SSE = false;
+module.bundle.HMR_BUNDLE_ID = "bea5a1fd88305ed2";
+"use strict";
+/* global HMR_HOST, HMR_PORT, HMR_ENV_HASH, HMR_SECURE, HMR_USE_SSE, chrome, browser, __parcel__import__, __parcel__importScripts__, ServiceWorkerGlobalScope */ /*::
+import type {
+  HMRAsset,
+  HMRMessage,
+} from '@parcel/reporter-dev-server/src/HMRServer.js';
+interface ParcelRequire {
+  (string): mixed;
+  cache: {|[string]: ParcelModule|};
+  hotData: {|[string]: mixed|};
+  Module: any;
+  parent: ?ParcelRequire;
+  isParcelRequire: true;
+  modules: {|[string]: [Function, {|[string]: string|}]|};
+  HMR_BUNDLE_ID: string;
+  root: ParcelRequire;
+}
+interface ParcelModule {
+  hot: {|
+    data: mixed,
+    accept(cb: (Function) => void): void,
+    dispose(cb: (mixed) => void): void,
+    // accept(deps: Array<string> | string, cb: (Function) => void): void,
+    // decline(): void,
+    _acceptCallbacks: Array<(Function) => void>,
+    _disposeCallbacks: Array<(mixed) => void>,
+  |};
+}
+interface ExtensionContext {
+  runtime: {|
+    reload(): void,
+    getURL(url: string): string;
+    getManifest(): {manifest_version: number, ...};
+  |};
+}
+declare var module: {bundle: ParcelRequire, ...};
+declare var HMR_HOST: string;
+declare var HMR_PORT: string;
+declare var HMR_ENV_HASH: string;
+declare var HMR_SECURE: boolean;
+declare var HMR_USE_SSE: boolean;
+declare var chrome: ExtensionContext;
+declare var browser: ExtensionContext;
+declare var __parcel__import__: (string) => Promise<void>;
+declare var __parcel__importScripts__: (string) => Promise<void>;
+declare var globalThis: typeof self;
+declare var ServiceWorkerGlobalScope: Object;
+*/ var OVERLAY_ID = "__parcel__error__overlay__";
+var OldModule = module.bundle.Module;
+function Module(moduleName) {
+    OldModule.call(this, moduleName);
+    this.hot = {
+        data: module.bundle.hotData[moduleName],
+        _acceptCallbacks: [],
+        _disposeCallbacks: [],
+        accept: function(fn) {
+            this._acceptCallbacks.push(fn || function() {});
+        },
+        dispose: function(fn) {
+            this._disposeCallbacks.push(fn);
+        }
+    };
+    module.bundle.hotData[moduleName] = undefined;
+}
+module.bundle.Module = Module;
+module.bundle.hotData = {};
+var checkedAssets /*: {|[string]: boolean|} */ , assetsToDispose /*: Array<[ParcelRequire, string]> */ , assetsToAccept /*: Array<[ParcelRequire, string]> */ ;
+function getHostname() {
+    return HMR_HOST || (location.protocol.indexOf("http") === 0 ? location.hostname : "localhost");
+}
+function getPort() {
+    return HMR_PORT || location.port;
+}
+// eslint-disable-next-line no-redeclare
+var parent = module.bundle.parent;
+if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== "undefined") {
+    var hostname = getHostname();
+    var port = getPort();
+    var protocol = HMR_SECURE || location.protocol == "https:" && ![
+        "localhost",
+        "127.0.0.1",
+        "0.0.0.0"
+    ].includes(hostname) ? "wss" : "ws";
+    var ws;
+    if (HMR_USE_SSE) ws = new EventSource("/__parcel_hmr");
+    else try {
+        ws = new WebSocket(protocol + "://" + hostname + (port ? ":" + port : "") + "/");
+    } catch (err) {
+        if (err.message) console.error(err.message);
+        ws = {};
+    }
+    // Web extension context
+    var extCtx = typeof browser === "undefined" ? typeof chrome === "undefined" ? null : chrome : browser;
+    // Safari doesn't support sourceURL in error stacks.
+    // eval may also be disabled via CSP, so do a quick check.
+    var supportsSourceURL = false;
+    try {
+        (0, eval)('throw new Error("test"); //# sourceURL=test.js');
+    } catch (err) {
+        supportsSourceURL = err.stack.includes("test.js");
+    }
+    // $FlowFixMe
+    ws.onmessage = async function(event /*: {data: string, ...} */ ) {
+        checkedAssets = {} /*: {|[string]: boolean|} */ ;
+        assetsToAccept = [];
+        assetsToDispose = [];
+        var data /*: HMRMessage */  = JSON.parse(event.data);
+        if (data.type === "update") {
+            // Remove error overlay if there is one
+            if (typeof document !== "undefined") removeErrorOverlay();
+            let assets = data.assets.filter((asset)=>asset.envHash === HMR_ENV_HASH);
+            // Handle HMR Update
+            let handled = assets.every((asset)=>{
+                return asset.type === "css" || asset.type === "js" && hmrAcceptCheck(module.bundle.root, asset.id, asset.depsByBundle);
+            });
+            if (handled) {
+                console.clear();
+                // Dispatch custom event so other runtimes (e.g React Refresh) are aware.
+                if (typeof window !== "undefined" && typeof CustomEvent !== "undefined") window.dispatchEvent(new CustomEvent("parcelhmraccept"));
+                await hmrApplyUpdates(assets);
+                // Dispose all old assets.
+                let processedAssets = {} /*: {|[string]: boolean|} */ ;
+                for(let i = 0; i < assetsToDispose.length; i++){
+                    let id = assetsToDispose[i][1];
+                    if (!processedAssets[id]) {
+                        hmrDispose(assetsToDispose[i][0], id);
+                        processedAssets[id] = true;
+                    }
+                }
+                // Run accept callbacks. This will also re-execute other disposed assets in topological order.
+                processedAssets = {};
+                for(let i = 0; i < assetsToAccept.length; i++){
+                    let id = assetsToAccept[i][1];
+                    if (!processedAssets[id]) {
+                        hmrAccept(assetsToAccept[i][0], id);
+                        processedAssets[id] = true;
+                    }
+                }
+            } else fullReload();
+        }
+        if (data.type === "error") {
+            // Log parcel errors to console
+            for (let ansiDiagnostic of data.diagnostics.ansi){
+                let stack = ansiDiagnostic.codeframe ? ansiDiagnostic.codeframe : ansiDiagnostic.stack;
+                console.error("\uD83D\uDEA8 [parcel]: " + ansiDiagnostic.message + "\n" + stack + "\n\n" + ansiDiagnostic.hints.join("\n"));
+            }
+            if (typeof document !== "undefined") {
+                // Render the fancy html overlay
+                removeErrorOverlay();
+                var overlay = createErrorOverlay(data.diagnostics.html);
+                // $FlowFixMe
+                document.body.appendChild(overlay);
+            }
+        }
+    };
+    if (ws instanceof WebSocket) {
+        ws.onerror = function(e) {
+            if (e.message) console.error(e.message);
+        };
+        ws.onclose = function() {
+            console.warn("[parcel] \uD83D\uDEA8 Connection to the HMR server was lost");
+        };
+    }
+}
+function removeErrorOverlay() {
+    var overlay = document.getElementById(OVERLAY_ID);
+    if (overlay) {
+        overlay.remove();
+        console.log("[parcel] \u2728 Error resolved");
+    }
+}
+function createErrorOverlay(diagnostics) {
+    var overlay = document.createElement("div");
+    overlay.id = OVERLAY_ID;
+    let errorHTML = '<div style="background: black; opacity: 0.85; font-size: 16px; color: white; position: fixed; height: 100%; width: 100%; top: 0px; left: 0px; padding: 30px; font-family: Menlo, Consolas, monospace; z-index: 9999;">';
+    for (let diagnostic of diagnostics){
+        let stack = diagnostic.frames.length ? diagnostic.frames.reduce((p, frame)=>{
+            return `${p}
+<a href="/__parcel_launch_editor?file=${encodeURIComponent(frame.location)}" style="text-decoration: underline; color: #888" onclick="fetch(this.href); return false">${frame.location}</a>
+${frame.code}`;
+        }, "") : diagnostic.stack;
+        errorHTML += `
+      <div>
+        <div style="font-size: 18px; font-weight: bold; margin-top: 20px;">
+          \u{1F6A8} ${diagnostic.message}
+        </div>
+        <pre>${stack}</pre>
+        <div>
+          ${diagnostic.hints.map((hint)=>"<div>\uD83D\uDCA1 " + hint + "</div>").join("")}
+        </div>
+        ${diagnostic.documentation ? `<div>\u{1F4DD} <a style="color: violet" href="${diagnostic.documentation}" target="_blank">Learn more</a></div>` : ""}
+      </div>
+    `;
+    }
+    errorHTML += "</div>";
+    overlay.innerHTML = errorHTML;
+    return overlay;
+}
+function fullReload() {
+    if ("reload" in location) location.reload();
+    else if (extCtx && extCtx.runtime && extCtx.runtime.reload) extCtx.runtime.reload();
+}
+function getParents(bundle, id) /*: Array<[ParcelRequire, string]> */ {
+    var modules = bundle.modules;
+    if (!modules) return [];
+    var parents = [];
+    var k, d, dep;
+    for(k in modules)for(d in modules[k][1]){
+        dep = modules[k][1][d];
+        if (dep === id || Array.isArray(dep) && dep[dep.length - 1] === id) parents.push([
+            bundle,
+            k
+        ]);
+    }
+    if (bundle.parent) parents = parents.concat(getParents(bundle.parent, id));
+    return parents;
+}
+function updateLink(link) {
+    var href = link.getAttribute("href");
+    if (!href) return;
+    var newLink = link.cloneNode();
+    newLink.onload = function() {
+        if (link.parentNode !== null) // $FlowFixMe
+        link.parentNode.removeChild(link);
+    };
+    newLink.setAttribute("href", // $FlowFixMe
+    href.split("?")[0] + "?" + Date.now());
+    // $FlowFixMe
+    link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+var cssTimeout = null;
+function reloadCSS() {
+    if (cssTimeout) return;
+    cssTimeout = setTimeout(function() {
+        var links = document.querySelectorAll('link[rel="stylesheet"]');
+        for(var i = 0; i < links.length; i++){
+            // $FlowFixMe[incompatible-type]
+            var href /*: string */  = links[i].getAttribute("href");
+            var hostname = getHostname();
+            var servedFromHMRServer = hostname === "localhost" ? new RegExp("^(https?:\\/\\/(0.0.0.0|127.0.0.1)|localhost):" + getPort()).test(href) : href.indexOf(hostname + ":" + getPort());
+            var absolute = /^https?:\/\//i.test(href) && href.indexOf(location.origin) !== 0 && !servedFromHMRServer;
+            if (!absolute) updateLink(links[i]);
+        }
+        cssTimeout = null;
+    }, 50);
+}
+function hmrDownload(asset) {
+    if (asset.type === "js") {
+        if (typeof document !== "undefined") {
+            let script = document.createElement("script");
+            script.src = asset.url + "?t=" + Date.now();
+            if (asset.outputFormat === "esmodule") script.type = "module";
+            return new Promise((resolve, reject)=>{
+                var _document$head;
+                script.onload = ()=>resolve(script);
+                script.onerror = reject;
+                (_document$head = document.head) === null || _document$head === void 0 || _document$head.appendChild(script);
+            });
+        } else if (typeof importScripts === "function") {
+            // Worker scripts
+            if (asset.outputFormat === "esmodule") return import(asset.url + "?t=" + Date.now());
+            else return new Promise((resolve, reject)=>{
+                try {
+                    importScripts(asset.url + "?t=" + Date.now());
+                    resolve();
+                } catch (err) {
+                    reject(err);
+                }
+            });
+        }
+    }
+}
+async function hmrApplyUpdates(assets) {
+    global.parcelHotUpdate = Object.create(null);
+    let scriptsToRemove;
+    try {
+        // If sourceURL comments aren't supported in eval, we need to load
+        // the update from the dev server over HTTP so that stack traces
+        // are correct in errors/logs. This is much slower than eval, so
+        // we only do it if needed (currently just Safari).
+        // https://bugs.webkit.org/show_bug.cgi?id=137297
+        // This path is also taken if a CSP disallows eval.
+        if (!supportsSourceURL) {
+            let promises = assets.map((asset)=>{
+                var _hmrDownload;
+                return (_hmrDownload = hmrDownload(asset)) === null || _hmrDownload === void 0 ? void 0 : _hmrDownload.catch((err)=>{
+                    // Web extension fix
+                    if (extCtx && extCtx.runtime && extCtx.runtime.getManifest().manifest_version == 3 && typeof ServiceWorkerGlobalScope != "undefined" && global instanceof ServiceWorkerGlobalScope) {
+                        extCtx.runtime.reload();
+                        return;
+                    }
+                    throw err;
+                });
+            });
+            scriptsToRemove = await Promise.all(promises);
+        }
+        assets.forEach(function(asset) {
+            hmrApply(module.bundle.root, asset);
+        });
+    } finally{
+        delete global.parcelHotUpdate;
+        if (scriptsToRemove) scriptsToRemove.forEach((script)=>{
+            if (script) {
+                var _document$head2;
+                (_document$head2 = document.head) === null || _document$head2 === void 0 || _document$head2.removeChild(script);
+            }
+        });
+    }
+}
+function hmrApply(bundle /*: ParcelRequire */ , asset /*:  HMRAsset */ ) {
+    var modules = bundle.modules;
+    if (!modules) return;
+    if (asset.type === "css") reloadCSS();
+    else if (asset.type === "js") {
+        let deps = asset.depsByBundle[bundle.HMR_BUNDLE_ID];
+        if (deps) {
+            if (modules[asset.id]) {
+                // Remove dependencies that are removed and will become orphaned.
+                // This is necessary so that if the asset is added back again, the cache is gone, and we prevent a full page reload.
+                let oldDeps = modules[asset.id][1];
+                for(let dep in oldDeps)if (!deps[dep] || deps[dep] !== oldDeps[dep]) {
+                    let id = oldDeps[dep];
+                    let parents = getParents(module.bundle.root, id);
+                    if (parents.length === 1) hmrDelete(module.bundle.root, id);
+                }
+            }
+            if (supportsSourceURL) // Global eval. We would use `new Function` here but browser
+            // support for source maps is better with eval.
+            (0, eval)(asset.output);
+            // $FlowFixMe
+            let fn = global.parcelHotUpdate[asset.id];
+            modules[asset.id] = [
+                fn,
+                deps
+            ];
+        } else if (bundle.parent) hmrApply(bundle.parent, asset);
+    }
+}
+function hmrDelete(bundle, id) {
+    let modules = bundle.modules;
+    if (!modules) return;
+    if (modules[id]) {
+        // Collect dependencies that will become orphaned when this module is deleted.
+        let deps = modules[id][1];
+        let orphans = [];
+        for(let dep in deps){
+            let parents = getParents(module.bundle.root, deps[dep]);
+            if (parents.length === 1) orphans.push(deps[dep]);
+        }
+        // Delete the module. This must be done before deleting dependencies in case of circular dependencies.
+        delete modules[id];
+        delete bundle.cache[id];
+        // Now delete the orphans.
+        orphans.forEach((id)=>{
+            hmrDelete(module.bundle.root, id);
+        });
+    } else if (bundle.parent) hmrDelete(bundle.parent, id);
+}
+function hmrAcceptCheck(bundle /*: ParcelRequire */ , id /*: string */ , depsByBundle /*: ?{ [string]: { [string]: string } }*/ ) {
+    if (hmrAcceptCheckOne(bundle, id, depsByBundle)) return true;
+    // Traverse parents breadth first. All possible ancestries must accept the HMR update, or we'll reload.
+    let parents = getParents(module.bundle.root, id);
+    let accepted = false;
+    while(parents.length > 0){
+        let v = parents.shift();
+        let a = hmrAcceptCheckOne(v[0], v[1], null);
+        if (a) // If this parent accepts, stop traversing upward, but still consider siblings.
+        accepted = true;
+        else {
+            // Otherwise, queue the parents in the next level upward.
+            let p = getParents(module.bundle.root, v[1]);
+            if (p.length === 0) {
+                // If there are no parents, then we've reached an entry without accepting. Reload.
+                accepted = false;
+                break;
+            }
+            parents.push(...p);
+        }
+    }
+    return accepted;
+}
+function hmrAcceptCheckOne(bundle /*: ParcelRequire */ , id /*: string */ , depsByBundle /*: ?{ [string]: { [string]: string } }*/ ) {
+    var modules = bundle.modules;
+    if (!modules) return;
+    if (depsByBundle && !depsByBundle[bundle.HMR_BUNDLE_ID]) {
+        // If we reached the root bundle without finding where the asset should go,
+        // there's nothing to do. Mark as "accepted" so we don't reload the page.
+        if (!bundle.parent) return true;
+        return hmrAcceptCheck(bundle.parent, id, depsByBundle);
+    }
+    if (checkedAssets[id]) return true;
+    checkedAssets[id] = true;
+    var cached = bundle.cache[id];
+    assetsToDispose.push([
+        bundle,
+        id
+    ]);
+    if (!cached || cached.hot && cached.hot._acceptCallbacks.length) {
+        assetsToAccept.push([
+            bundle,
+            id
+        ]);
+        return true;
+    }
+}
+function hmrDispose(bundle /*: ParcelRequire */ , id /*: string */ ) {
+    var cached = bundle.cache[id];
+    bundle.hotData[id] = {};
+    if (cached && cached.hot) cached.hot.data = bundle.hotData[id];
+    if (cached && cached.hot && cached.hot._disposeCallbacks.length) cached.hot._disposeCallbacks.forEach(function(cb) {
+        cb(bundle.hotData[id]);
+    });
+    delete bundle.cache[id];
+}
+function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
+    // Execute the module.
+    bundle(id);
+    // Run the accept callbacks in the new version of the module.
+    var cached = bundle.cache[id];
+    if (cached && cached.hot && cached.hot._acceptCallbacks.length) cached.hot._acceptCallbacks.forEach(function(cb) {
+        var assetsToAlsoAccept = cb(function() {
+            return getParents(module.bundle.root, id);
+        });
+        if (assetsToAlsoAccept && assetsToAccept.length) {
+            assetsToAlsoAccept.forEach(function(a) {
+                hmrDispose(a[0], a[1]);
+            });
+            // $FlowFixMe[method-unbinding]
+            assetsToAccept.push.apply(assetsToAccept, assetsToAlsoAccept);
+        }
+    });
+}
+
+},{}],"f9yMX":[function(require,module,exports) {
+var _shippingJson = require("../artifacts/contracts/ShippingReceiving.sol/Shipping.json");
+var _ethers = require("ethers");
+const connectBtn = document.getElementById("connect-btn");
+const addressValue = document.getElementById("address-value");
+const isConnectedValue = document.getElementById("is-connected-value");
+let isConnected = false;
+connectBtn.addEventListener("click", async ()=>{
+    if (typeof window.ethereum !== "undefined") try {
+        isConnectedValue.innerText = "Loading...";
+        // Request account access if needed
+        await window.ethereum.request({
+            method: "eth_requestAccounts"
+        });
+        // Create a new Web3 provider
+        const provider = new (0, _ethers.ethers).BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        // Get the connected account address
+        const address = await signer.getAddress();
+        addressValue.innerText = `Address: ${address}`;
+        isConnectedValue.innerText = "Connected";
+        isConnected = true;
+        // Your contract setup can go here
+        const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
+        const abi = [];
+        const providerContract = new (0, _ethers.ethers).Contract(contractAddress, abi, provider);
+        const signerContract = new (0, _ethers.ethers).Contract(contractAddress, abi, signer);
+    } catch (error) {
+        console.error(error);
+        isConnectedValue.innerText = `Error occurred: ${error.message}`;
+        isConnected = false;
+    }
+    else alert("MetaMask is not installed. Please install it to use this app.");
+});
+
+},{"../artifacts/contracts/ShippingReceiving.sol/Shipping.json":"gbRHK","ethers":"hdHML"}],"gbRHK":[function(require,module,exports) {
+module.exports = JSON.parse('{"_format":"hh-sol-artifact-1","contractName":"Shipping","sourceName":"contracts/ShippingReceiving.sol","abi":[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"_orderId","type":"uint256"}],"name":"billOfLandingCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"_orderId","type":"uint256"}],"name":"billOfLandingUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_sender","type":"address"},{"indexed":false,"internalType":"address","name":"_receiver","type":"address"},{"indexed":false,"internalType":"string","name":"_material","type":"string"},{"indexed":false,"internalType":"uint256","name":"_materialCount","type":"uint256"}],"name":"cargoCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_sender","type":"address"},{"indexed":false,"internalType":"string","name":"_specialInstructions","type":"string"},{"indexed":false,"internalType":"enum Shipping.Status","name":"_deliveryStatus","type":"uint8"}],"name":"cargoReceived","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_sender","type":"address"},{"indexed":false,"internalType":"string","name":"_specialInstructions","type":"string"},{"indexed":false,"internalType":"enum Shipping.Status","name":"_deliveryStatus","type":"uint8"}],"name":"cargoShipped","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_sender","type":"address"},{"indexed":false,"internalType":"address","name":"_receiver","type":"address"},{"indexed":false,"internalType":"uint256","name":"_orderId","type":"uint256"}],"name":"payment","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_sender","type":"address"},{"indexed":false,"internalType":"string","name":"_currentLocation","type":"string"},{"indexed":false,"internalType":"string","name":"_finalDestination","type":"string"}],"name":"updatedLocation","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_owner","type":"address"}],"name":"withdrawal","type":"event"},{"inputs":[{"internalType":"uint256","name":"_bolId","type":"uint256"}],"name":"acceptCargo","outputs":[{"internalType":"enum Shipping.Status","name":"","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_sender","type":"address"},{"internalType":"address","name":"_receiver","type":"address"},{"internalType":"string","name":"_currentLocation","type":"string"},{"internalType":"string","name":"_material","type":"string"},{"internalType":"uint256","name":"_materialCount","type":"uint256"},{"internalType":"uint256","name":"_materialCost","type":"uint256"},{"internalType":"string","name":"_specialInstructions","type":"string"},{"internalType":"string","name":"_finalDestination","type":"string"}],"name":"addBillofLanding","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"bolId","outputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"receiver","type":"address"},{"internalType":"string","name":"currentLocation","type":"string"},{"internalType":"string","name":"material","type":"string"},{"internalType":"uint256","name":"materialCount","type":"uint256"},{"internalType":"uint256","name":"materialCost","type":"uint256"},{"internalType":"string","name":"specialInstructions","type":"string"},{"internalType":"string","name":"finalDestination","type":"string"},{"internalType":"enum Shipping.Status","name":"deliveryStatus","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_bolId","type":"uint256"}],"name":"cancelCargo","outputs":[{"internalType":"enum Shipping.Status","name":"","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"companyInfo","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"email","type":"string"},{"internalType":"uint256","name":"phoneNo","type":"uint256"},{"internalType":"string","name":"website","type":"string"},{"internalType":"string","name":"companyAddress","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"confirmReceipt","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"registerCompany","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_bolId","type":"uint256"}],"name":"rejectCargo","outputs":[{"internalType":"enum Shipping.Status","name":"","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_bolId","type":"uint256"}],"name":"shipCargo","outputs":[{"internalType":"enum Shipping.Status","name":"","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_currentLocation","type":"string"},{"internalType":"uint256","name":"_cargoId","type":"uint256"}],"name":"updateLocation","outputs":[],"stateMutability":"nonpayable","type":"function"}],"bytecode":"0x60806040523480156200001157600080fd5b5033600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff1603620000885760006040517f1e4fbdf70000000000000000000000000000000000000000000000000000000081526004016200007f9190620001a9565b60405180910390fd5b6200009981620000a060201b60201c565b50620001c6565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050816000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055508173ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a35050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000620001918262000164565b9050919050565b620001a38162000184565b82525050565b6000602082019050620001c0600083018462000198565b92915050565b612a3880620001d66000396000f3fe608060405234801561001057600080fd5b50600436106100cf5760003560e01c80638da5cb5b1161008c578063cf7496fb11610066578063cf7496fb146101ec578063e3e436fb14610224578063f22a9bac14610258578063f2fde38b14610288576100cf565b80638da5cb5b1461016e5780639672a2f11461018c578063bee0eceb146101bc576100cf565b80631d3594bc146100d45780632a8d462b14610104578063715018a6146101345780637cad11071461013e5780637d94ad98146101485780638c9d977614610152575b600080fd5b6100ee60048036038101906100e99190611be5565b6102a4565b6040516100fb9190611d1a565b60405180910390f35b61011e60048036038101906101199190611d35565b610527565b60405161012b9190611dd9565b60405180910390f35b61013c610822565b005b610146610836565b005b610150610838565b005b61016c60048036038101906101679190611df4565b61083a565b005b610176610a41565b6040516101839190611e5f565b60405180910390f35b6101a660048036038101906101a19190611d35565b610a6a565b6040516101b39190611dd9565b60405180910390f35b6101d660048036038101906101d19190611d35565b610d02565b6040516101e39190611dd9565b60405180910390f35b61020660048036038101906102019190611d35565b610ec3565b60405161021b99989796959493929190611ef9565b60405180910390f35b61023e60048036038101906102399190611fa2565b61117e565b60405161024f959493929190611fcf565b60405180910390f35b610272600480360381019061026d9190611d35565b6113d4565b60405161027f9190611dd9565b60405180910390f35b6102a2600480360381019061029d9190611fa2565b61166c565b005b6000806040518061012001604052808b73ffffffffffffffffffffffffffffffffffffffff1681526020018a73ffffffffffffffffffffffffffffffffffffffff1681526020018981526020018881526020018781526020018681526020018581526020018481526020016000600481111561032357610322611d62565b5b8152509050600181908060018154018082558091505060019003906000526020600020906009020160009091909190915060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060208201518160010160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060408201518160020190816103f7919061224a565b50606082015181600301908161040d919061224a565b506080820151816004015560a0820151816005015560c0820151816006019081610437919061224a565b5060e082015181600701908161044d919061224a565b506101008201518160080160006101000a81548160ff0219169083600481111561047a57610479611d62565b5b02179055505050600060018080549050610494919061234b565b90506104a48260000151826116f2565b506104b38260200151826117cb565b50816000015173ffffffffffffffffffffffffffffffffffffffff167f6ce8ceaac94a175189efa7ee688e50859488a4ea5e9d50cd438ddaee5004725d83602001518460600151856080015160405161050e9392919061237f565b60405180910390a2809250505098975050505050505050565b600081600560003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600082815260200190815260200160002060009054906101000a900460ff166105c7576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016105be9061242f565b60405180910390fd5b600260048111156105db576105da611d62565b5b600184815481106105ef576105ee61244f565b5b906000526020600020906009020160080160009054906101000a900460ff1660048111156106205761061f611d62565b5b14158061068457506003600481111561063c5761063b611d62565b5b600184815481106106505761064f61244f565b5b906000526020600020906009020160080160009054906101000a900460ff16600481111561068157610680611d62565b5b14155b6106c3576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016106ba906124f0565b60405180910390fd5b600183815481106106d7576106d661244f565b5b90600052602060002090600902016002016040516020016106f8919061259e565b60405160208183030381529060405280519060200120600184815481106107225761072161244f565b5b9060005260206000209060090201600701604051602001610743919061259e565b6040516020818303038152906040528051906020012003610799576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016107909061264d565b60405180910390fd5b6004600184815481106107af576107ae61244f565b5b906000526020600020906009020160080160006101000a81548160ff021916908360048111156107e2576107e1611d62565b5b0217905550600183815481106107fb576107fa61244f565b5b906000526020600020906009020160080160009054906101000a900460ff16915050919050565b61082a6118a4565b610834600061192b565b565b565b565b80600460003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600082815260200190815260200160002060009054906101000a900460ff166108d8576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016108cf906126df565b60405180910390fd5b600160048111156108ec576108eb611d62565b5b60018381548110610900576108ff61244f565b5b906000526020600020906009020160080160009054906101000a900460ff16600481111561093157610930611d62565b5b14610971576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040161096890612771565b60405180910390fd5b82600183815481106109865761098561244f565b5b906000526020600020906009020160020190816109a3919061224a565b503373ffffffffffffffffffffffffffffffffffffffff167fe76cf74e69ec52c98a577258fecc28c0ca042124666247b7116d37caf0c49283600184815481106109f0576109ef61244f565b5b906000526020600020906009020160020160018581548110610a1557610a1461244f565b5b9060005260206000209060090201600701604051610a34929190612815565b60405180910390a2505050565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905090565b600081600560003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600082815260200190815260200160002060009054906101000a900460ff16610b0a576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401610b019061242f565b60405180910390fd5b60016004811115610b1e57610b1d611d62565b5b60018481548110610b3257610b3161244f565b5b906000526020600020906009020160080160009054906101000a900460ff166004811115610b6357610b62611d62565b5b14610ba3576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401610b9a906128be565b60405180910390fd5b60018381548110610bb757610bb661244f565b5b9060005260206000209060090201600201604051602001610bd8919061259e565b6040516020818303038152906040528051906020012060018481548110610c0257610c0161244f565b5b9060005260206000209060090201600701604051602001610c23919061259e565b6040516020818303038152906040528051906020012014610c79576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401610c7090612950565b60405180910390fd5b600360018481548110610c8f57610c8e61244f565b5b906000526020600020906009020160080160006101000a81548160ff02191690836004811115610cc257610cc1611d62565b5b021790555060018381548110610cdb57610cda61244f565b5b906000526020600020906009020160080160009054906101000a900460ff16915050919050565b600081600460003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600082815260200190815260200160002060009054906101000a900460ff16610da2576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401610d99906126df565b60405180910390fd5b60006004811115610db657610db5611d62565b5b60018481548110610dca57610dc961244f565b5b906000526020600020906009020160080160009054906101000a900460ff166004811115610dfb57610dfa611d62565b5b14610e3b576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401610e3290612771565b60405180910390fd5b6001808481548110610e5057610e4f61244f565b5b906000526020600020906009020160080160006101000a81548160ff02191690836004811115610e8357610e82611d62565b5b021790555060018381548110610e9c57610e9b61244f565b5b906000526020600020906009020160080160009054906101000a900460ff16915050919050565b60036020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1690806002018054610f329061206d565b80601f0160208091040260200160405190810160405280929190818152602001828054610f5e9061206d565b8015610fab5780601f10610f8057610100808354040283529160200191610fab565b820191906000526020600020905b815481529060010190602001808311610f8e57829003601f168201915b505050505090806003018054610fc09061206d565b80601f0160208091040260200160405190810160405280929190818152602001828054610fec9061206d565b80156110395780601f1061100e57610100808354040283529160200191611039565b820191906000526020600020905b81548152906001019060200180831161101c57829003601f168201915b50505050509080600401549080600501549080600601805461105a9061206d565b80601f01602080910402602001604051908101604052809291908181526020018280546110869061206d565b80156110d35780601f106110a8576101008083540402835291602001916110d3565b820191906000526020600020905b8154815290600101906020018083116110b657829003601f168201915b5050505050908060070180546110e89061206d565b80601f01602080910402602001604051908101604052809291908181526020018280546111149061206d565b80156111615780601f1061113657610100808354040283529160200191611161565b820191906000526020600020905b81548152906001019060200180831161114457829003601f168201915b5050505050908060080160009054906101000a900460ff16905089565b60026020528060005260406000206000915090508060000180546111a19061206d565b80601f01602080910402602001604051908101604052809291908181526020018280546111cd9061206d565b801561121a5780601f106111ef5761010080835404028352916020019161121a565b820191906000526020600020905b8154815290600101906020018083116111fd57829003601f168201915b50505050509080600101805461122f9061206d565b80601f016020809104026020016040519081016040528092919081815260200182805461125b9061206d565b80156112a85780601f1061127d576101008083540402835291602001916112a8565b820191906000526020600020905b81548152906001019060200180831161128b57829003601f168201915b5050505050908060020154908060030180546112c39061206d565b80601f01602080910402602001604051908101604052809291908181526020018280546112ef9061206d565b801561133c5780601f106113115761010080835404028352916020019161133c565b820191906000526020600020905b81548152906001019060200180831161131f57829003601f168201915b5050505050908060040180546113519061206d565b80601f016020809104026020016040519081016040528092919081815260200182805461137d9061206d565b80156113ca5780601f1061139f576101008083540402835291602001916113ca565b820191906000526020600020905b8154815290600101906020018083116113ad57829003601f168201915b5050505050905085565b600081600560003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600082815260200190815260200160002060009054906101000a900460ff16611474576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040161146b9061242f565b60405180910390fd5b6001600481111561148857611487611d62565b5b6001848154811061149c5761149b61244f565b5b906000526020600020906009020160080160009054906101000a900460ff1660048111156114cd576114cc611d62565b5b1461150d576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401611504906128be565b60405180910390fd5b600183815481106115215761152061244f565b5b9060005260206000209060090201600201604051602001611542919061259e565b604051602081830303815290604052805190602001206001848154811061156c5761156b61244f565b5b906000526020600020906009020160070160405160200161158d919061259e565b60405160208183030381529060405280519060200120146115e3576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016115da906129e2565b60405180910390fd5b6002600184815481106115f9576115f861244f565b5b906000526020600020906009020160080160006101000a81548160ff0219169083600481111561162c5761162b611d62565b5b0217905550600183815481106116455761164461244f565b5b906000526020600020906009020160080160009054906101000a900460ff16915050919050565b6116746118a4565b600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff16036116e65760006040517f1e4fbdf70000000000000000000000000000000000000000000000000000000081526004016116dd9190611e5f565b60405180910390fd5b6116ef8161192b565b50565b60006116fc6118a4565b6001600460008573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600084815260200190815260200160002060006101000a81548160ff021916908315150217905550600460008473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600083815260200190815260200160002060009054906101000a900460ff16905092915050565b60006117d56118a4565b6001600560008573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600084815260200190815260200160002060006101000a81548160ff021916908315150217905550600560008473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600083815260200190815260200160002060009054906101000a900460ff16905092915050565b6118ac6119ef565b73ffffffffffffffffffffffffffffffffffffffff166118ca610a41565b73ffffffffffffffffffffffffffffffffffffffff1614611929576118ed6119ef565b6040517f118cdaa70000000000000000000000000000000000000000000000000000000081526004016119209190611e5f565b60405180910390fd5b565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050816000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055508173ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a35050565b600033905090565b6000604051905090565b600080fd5b600080fd5b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000611a3682611a0b565b9050919050565b611a4681611a2b565b8114611a5157600080fd5b50565b600081359050611a6381611a3d565b92915050565b600080fd5b600080fd5b6000601f19601f8301169050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b611abc82611a73565b810181811067ffffffffffffffff82111715611adb57611ada611a84565b5b80604052505050565b6000611aee6119f7565b9050611afa8282611ab3565b919050565b600067ffffffffffffffff821115611b1a57611b19611a84565b5b611b2382611a73565b9050602081019050919050565b82818337600083830152505050565b6000611b52611b4d84611aff565b611ae4565b905082815260208101848484011115611b6e57611b6d611a6e565b5b611b79848285611b30565b509392505050565b600082601f830112611b9657611b95611a69565b5b8135611ba6848260208601611b3f565b91505092915050565b6000819050919050565b611bc281611baf565b8114611bcd57600080fd5b50565b600081359050611bdf81611bb9565b92915050565b600080600080600080600080610100898b031215611c0657611c05611a01565b5b6000611c148b828c01611a54565b9850506020611c258b828c01611a54565b975050604089013567ffffffffffffffff811115611c4657611c45611a06565b5b611c528b828c01611b81565b965050606089013567ffffffffffffffff811115611c7357611c72611a06565b5b611c7f8b828c01611b81565b9550506080611c908b828c01611bd0565b94505060a0611ca18b828c01611bd0565b93505060c089013567ffffffffffffffff811115611cc257611cc1611a06565b5b611cce8b828c01611b81565b92505060e089013567ffffffffffffffff811115611cef57611cee611a06565b5b611cfb8b828c01611b81565b9150509295985092959890939650565b611d1481611baf565b82525050565b6000602082019050611d2f6000830184611d0b565b92915050565b600060208284031215611d4b57611d4a611a01565b5b6000611d5984828501611bd0565b91505092915050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602160045260246000fd5b60058110611da257611da1611d62565b5b50565b6000819050611db382611d91565b919050565b6000611dc382611da5565b9050919050565b611dd381611db8565b82525050565b6000602082019050611dee6000830184611dca565b92915050565b60008060408385031215611e0b57611e0a611a01565b5b600083013567ffffffffffffffff811115611e2957611e28611a06565b5b611e3585828601611b81565b9250506020611e4685828601611bd0565b9150509250929050565b611e5981611a2b565b82525050565b6000602082019050611e746000830184611e50565b92915050565b600081519050919050565b600082825260208201905092915050565b60005b83811015611eb4578082015181840152602081019050611e99565b60008484015250505050565b6000611ecb82611e7a565b611ed58185611e85565b9350611ee5818560208601611e96565b611eee81611a73565b840191505092915050565b600061012082019050611f0f600083018c611e50565b611f1c602083018b611e50565b8181036040830152611f2e818a611ec0565b90508181036060830152611f428189611ec0565b9050611f516080830188611d0b565b611f5e60a0830187611d0b565b81810360c0830152611f708186611ec0565b905081810360e0830152611f848185611ec0565b9050611f94610100830184611dca565b9a9950505050505050505050565b600060208284031215611fb857611fb7611a01565b5b6000611fc684828501611a54565b91505092915050565b600060a0820190508181036000830152611fe98188611ec0565b90508181036020830152611ffd8187611ec0565b905061200c6040830186611d0b565b818103606083015261201e8185611ec0565b905081810360808301526120328184611ec0565b90509695505050505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b6000600282049050600182168061208557607f821691505b6020821081036120985761209761203e565b5b50919050565b60008190508160005260206000209050919050565b60006020601f8301049050919050565b600082821b905092915050565b6000600883026121007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff826120c3565b61210a86836120c3565b95508019841693508086168417925050509392505050565b6000819050919050565b600061214761214261213d84611baf565b612122565b611baf565b9050919050565b6000819050919050565b6121618361212c565b61217561216d8261214e565b8484546120d0565b825550505050565b600090565b61218a61217d565b612195818484612158565b505050565b5b818110156121b9576121ae600082612182565b60018101905061219b565b5050565b601f8211156121fe576121cf8161209e565b6121d8846120b3565b810160208510156121e7578190505b6121fb6121f3856120b3565b83018261219a565b50505b505050565b600082821c905092915050565b600061222160001984600802612203565b1980831691505092915050565b600061223a8383612210565b9150826002028217905092915050565b61225382611e7a565b67ffffffffffffffff81111561226c5761226b611a84565b5b612276825461206d565b6122818282856121bd565b600060209050601f8311600181146122b457600084156122a2578287015190505b6122ac858261222e565b865550612314565b601f1984166122c28661209e565b60005b828110156122ea578489015182556001820191506020850194506020810190506122c5565b868310156123075784890151612303601f891682612210565b8355505b6001600288020188555050505b505050505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b600061235682611baf565b915061236183611baf565b92508282039050818111156123795761237861231c565b5b92915050565b60006060820190506123946000830186611e50565b81810360208301526123a68185611ec0565b90506123b56040830184611d0b565b949350505050565b7f41646472657373206e6f7420417574686f72697a65642052656369657665722060008201527f666f7220746869732042696c6c206f66204c616e64696e672049440000000000602082015250565b6000612419603b83611e85565b9150612424826123bd565b604082019050919050565b600060208201905081810360008301526124488161240c565b9050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b7f44656c6965766572792063616e6e6f74206265206163636570746564206f722060008201527f72656a656374656420696e206f7264657220746f2063616e63656c0000000000602082015250565b60006124da603b83611e85565b91506124e58261247e565b604082019050919050565b60006020820190508181036000830152612509816124cd565b9050919050565b600081905092915050565b600081546125288161206d565b6125328186612510565b9450600182166000811461254d576001811461256257612595565b60ff1983168652811515820286019350612595565b61256b8561209e565b60005b8381101561258d5781548189015260018201915060208101905061256e565b838801955050505b50505092915050565b60006125aa828461251b565b915081905092915050565b7f43757272656e74206c6f636174696f6e206f6620636172676f2063616e6e6f7460008201527f2062652061742066696e616c2064657374696e6174696f6e20746f2063616e6360208201527f656c000000000000000000000000000000000000000000000000000000000000604082015250565b6000612637604283611e85565b9150612642826125b5565b606082019050919050565b600060208201905081810360008301526126668161262a565b9050919050565b7f41646472657373206e6f7420417574686f72697a65642053656e64657220666f60008201527f7220746869732042696c6c206f66204c616e64696e6720494400000000000000602082015250565b60006126c9603983611e85565b91506126d48261266d565b604082019050919050565b600060208201905081810360008301526126f8816126bc565b9050919050565b7f44656c69657665727920737461747573206d75737420626520696e2050656e6460008201527f696e6720737461746520746f2073686970000000000000000000000000000000602082015250565b600061275b603183611e85565b9150612766826126ff565b604082019050919050565b6000602082019050818103600083015261278a8161274e565b9050919050565b6000815461279e8161206d565b6127a88186611e85565b945060018216600081146127c357600181146127d95761280c565b60ff19831686528115156020028601935061280c565b6127e28561209e565b60005b83811015612804578154818901526001820191506020810190506127e5565b808801955050505b50505092915050565b6000604082019050818103600083015261282f8185612791565b905081810360208301526128438184612791565b90509392505050565b7f44656c69657665727920737461747573206d75737420626520696e205368697060008201527f70696e6720737461746520746f20736869700000000000000000000000000000602082015250565b60006128a8603283611e85565b91506128b38261284c565b604082019050919050565b600060208201905081810360008301526128d78161289b565b9050919050565b7f43757272656e74206c6f636174696f6e206f6620636172676f206d757374206260008201527f652061742066696e616c2064657374696e6174696f6e20746f2072656a656374602082015250565b600061293a604083611e85565b9150612945826128de565b604082019050919050565b600060208201905081810360008301526129698161292d565b9050919050565b7f43757272656e74206c6f636174696f6e206f6620636172676f206d757374206260008201527f652061742066696e616c2064657374696e6174696f6e20746f20616363657074602082015250565b60006129cc604083611e85565b91506129d782612970565b604082019050919050565b600060208201905081810360008301526129fb816129bf565b905091905056fea26469706673582212204b8179a75172f9b94372265ce9dbfb6ff5da5fddf37feb21abdb67719be1f3c964736f6c63430008180033","deployedBytecode":"0x608060405234801561001057600080fd5b50600436106100cf5760003560e01c80638da5cb5b1161008c578063cf7496fb11610066578063cf7496fb146101ec578063e3e436fb14610224578063f22a9bac14610258578063f2fde38b14610288576100cf565b80638da5cb5b1461016e5780639672a2f11461018c578063bee0eceb146101bc576100cf565b80631d3594bc146100d45780632a8d462b14610104578063715018a6146101345780637cad11071461013e5780637d94ad98146101485780638c9d977614610152575b600080fd5b6100ee60048036038101906100e99190611be5565b6102a4565b6040516100fb9190611d1a565b60405180910390f35b61011e60048036038101906101199190611d35565b610527565b60405161012b9190611dd9565b60405180910390f35b61013c610822565b005b610146610836565b005b610150610838565b005b61016c60048036038101906101679190611df4565b61083a565b005b610176610a41565b6040516101839190611e5f565b60405180910390f35b6101a660048036038101906101a19190611d35565b610a6a565b6040516101b39190611dd9565b60405180910390f35b6101d660048036038101906101d19190611d35565b610d02565b6040516101e39190611dd9565b60405180910390f35b61020660048036038101906102019190611d35565b610ec3565b60405161021b99989796959493929190611ef9565b60405180910390f35b61023e60048036038101906102399190611fa2565b61117e565b60405161024f959493929190611fcf565b60405180910390f35b610272600480360381019061026d9190611d35565b6113d4565b60405161027f9190611dd9565b60405180910390f35b6102a2600480360381019061029d9190611fa2565b61166c565b005b6000806040518061012001604052808b73ffffffffffffffffffffffffffffffffffffffff1681526020018a73ffffffffffffffffffffffffffffffffffffffff1681526020018981526020018881526020018781526020018681526020018581526020018481526020016000600481111561032357610322611d62565b5b8152509050600181908060018154018082558091505060019003906000526020600020906009020160009091909190915060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060208201518160010160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060408201518160020190816103f7919061224a565b50606082015181600301908161040d919061224a565b506080820151816004015560a0820151816005015560c0820151816006019081610437919061224a565b5060e082015181600701908161044d919061224a565b506101008201518160080160006101000a81548160ff0219169083600481111561047a57610479611d62565b5b02179055505050600060018080549050610494919061234b565b90506104a48260000151826116f2565b506104b38260200151826117cb565b50816000015173ffffffffffffffffffffffffffffffffffffffff167f6ce8ceaac94a175189efa7ee688e50859488a4ea5e9d50cd438ddaee5004725d83602001518460600151856080015160405161050e9392919061237f565b60405180910390a2809250505098975050505050505050565b600081600560003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600082815260200190815260200160002060009054906101000a900460ff166105c7576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016105be9061242f565b60405180910390fd5b600260048111156105db576105da611d62565b5b600184815481106105ef576105ee61244f565b5b906000526020600020906009020160080160009054906101000a900460ff1660048111156106205761061f611d62565b5b14158061068457506003600481111561063c5761063b611d62565b5b600184815481106106505761064f61244f565b5b906000526020600020906009020160080160009054906101000a900460ff16600481111561068157610680611d62565b5b14155b6106c3576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016106ba906124f0565b60405180910390fd5b600183815481106106d7576106d661244f565b5b90600052602060002090600902016002016040516020016106f8919061259e565b60405160208183030381529060405280519060200120600184815481106107225761072161244f565b5b9060005260206000209060090201600701604051602001610743919061259e565b6040516020818303038152906040528051906020012003610799576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016107909061264d565b60405180910390fd5b6004600184815481106107af576107ae61244f565b5b906000526020600020906009020160080160006101000a81548160ff021916908360048111156107e2576107e1611d62565b5b0217905550600183815481106107fb576107fa61244f565b5b906000526020600020906009020160080160009054906101000a900460ff16915050919050565b61082a6118a4565b610834600061192b565b565b565b565b80600460003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600082815260200190815260200160002060009054906101000a900460ff166108d8576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016108cf906126df565b60405180910390fd5b600160048111156108ec576108eb611d62565b5b60018381548110610900576108ff61244f565b5b906000526020600020906009020160080160009054906101000a900460ff16600481111561093157610930611d62565b5b14610971576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040161096890612771565b60405180910390fd5b82600183815481106109865761098561244f565b5b906000526020600020906009020160020190816109a3919061224a565b503373ffffffffffffffffffffffffffffffffffffffff167fe76cf74e69ec52c98a577258fecc28c0ca042124666247b7116d37caf0c49283600184815481106109f0576109ef61244f565b5b906000526020600020906009020160020160018581548110610a1557610a1461244f565b5b9060005260206000209060090201600701604051610a34929190612815565b60405180910390a2505050565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905090565b600081600560003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600082815260200190815260200160002060009054906101000a900460ff16610b0a576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401610b019061242f565b60405180910390fd5b60016004811115610b1e57610b1d611d62565b5b60018481548110610b3257610b3161244f565b5b906000526020600020906009020160080160009054906101000a900460ff166004811115610b6357610b62611d62565b5b14610ba3576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401610b9a906128be565b60405180910390fd5b60018381548110610bb757610bb661244f565b5b9060005260206000209060090201600201604051602001610bd8919061259e565b6040516020818303038152906040528051906020012060018481548110610c0257610c0161244f565b5b9060005260206000209060090201600701604051602001610c23919061259e565b6040516020818303038152906040528051906020012014610c79576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401610c7090612950565b60405180910390fd5b600360018481548110610c8f57610c8e61244f565b5b906000526020600020906009020160080160006101000a81548160ff02191690836004811115610cc257610cc1611d62565b5b021790555060018381548110610cdb57610cda61244f565b5b906000526020600020906009020160080160009054906101000a900460ff16915050919050565b600081600460003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600082815260200190815260200160002060009054906101000a900460ff16610da2576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401610d99906126df565b60405180910390fd5b60006004811115610db657610db5611d62565b5b60018481548110610dca57610dc961244f565b5b906000526020600020906009020160080160009054906101000a900460ff166004811115610dfb57610dfa611d62565b5b14610e3b576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401610e3290612771565b60405180910390fd5b6001808481548110610e5057610e4f61244f565b5b906000526020600020906009020160080160006101000a81548160ff02191690836004811115610e8357610e82611d62565b5b021790555060018381548110610e9c57610e9b61244f565b5b906000526020600020906009020160080160009054906101000a900460ff16915050919050565b60036020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1690806002018054610f329061206d565b80601f0160208091040260200160405190810160405280929190818152602001828054610f5e9061206d565b8015610fab5780601f10610f8057610100808354040283529160200191610fab565b820191906000526020600020905b815481529060010190602001808311610f8e57829003601f168201915b505050505090806003018054610fc09061206d565b80601f0160208091040260200160405190810160405280929190818152602001828054610fec9061206d565b80156110395780601f1061100e57610100808354040283529160200191611039565b820191906000526020600020905b81548152906001019060200180831161101c57829003601f168201915b50505050509080600401549080600501549080600601805461105a9061206d565b80601f01602080910402602001604051908101604052809291908181526020018280546110869061206d565b80156110d35780601f106110a8576101008083540402835291602001916110d3565b820191906000526020600020905b8154815290600101906020018083116110b657829003601f168201915b5050505050908060070180546110e89061206d565b80601f01602080910402602001604051908101604052809291908181526020018280546111149061206d565b80156111615780601f1061113657610100808354040283529160200191611161565b820191906000526020600020905b81548152906001019060200180831161114457829003601f168201915b5050505050908060080160009054906101000a900460ff16905089565b60026020528060005260406000206000915090508060000180546111a19061206d565b80601f01602080910402602001604051908101604052809291908181526020018280546111cd9061206d565b801561121a5780601f106111ef5761010080835404028352916020019161121a565b820191906000526020600020905b8154815290600101906020018083116111fd57829003601f168201915b50505050509080600101805461122f9061206d565b80601f016020809104026020016040519081016040528092919081815260200182805461125b9061206d565b80156112a85780601f1061127d576101008083540402835291602001916112a8565b820191906000526020600020905b81548152906001019060200180831161128b57829003601f168201915b5050505050908060020154908060030180546112c39061206d565b80601f01602080910402602001604051908101604052809291908181526020018280546112ef9061206d565b801561133c5780601f106113115761010080835404028352916020019161133c565b820191906000526020600020905b81548152906001019060200180831161131f57829003601f168201915b5050505050908060040180546113519061206d565b80601f016020809104026020016040519081016040528092919081815260200182805461137d9061206d565b80156113ca5780601f1061139f576101008083540402835291602001916113ca565b820191906000526020600020905b8154815290600101906020018083116113ad57829003601f168201915b5050505050905085565b600081600560003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600082815260200190815260200160002060009054906101000a900460ff16611474576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040161146b9061242f565b60405180910390fd5b6001600481111561148857611487611d62565b5b6001848154811061149c5761149b61244f565b5b906000526020600020906009020160080160009054906101000a900460ff1660048111156114cd576114cc611d62565b5b1461150d576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401611504906128be565b60405180910390fd5b600183815481106115215761152061244f565b5b9060005260206000209060090201600201604051602001611542919061259e565b604051602081830303815290604052805190602001206001848154811061156c5761156b61244f565b5b906000526020600020906009020160070160405160200161158d919061259e565b60405160208183030381529060405280519060200120146115e3576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016115da906129e2565b60405180910390fd5b6002600184815481106115f9576115f861244f565b5b906000526020600020906009020160080160006101000a81548160ff0219169083600481111561162c5761162b611d62565b5b0217905550600183815481106116455761164461244f565b5b906000526020600020906009020160080160009054906101000a900460ff16915050919050565b6116746118a4565b600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff16036116e65760006040517f1e4fbdf70000000000000000000000000000000000000000000000000000000081526004016116dd9190611e5f565b60405180910390fd5b6116ef8161192b565b50565b60006116fc6118a4565b6001600460008573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600084815260200190815260200160002060006101000a81548160ff021916908315150217905550600460008473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600083815260200190815260200160002060009054906101000a900460ff16905092915050565b60006117d56118a4565b6001600560008573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600084815260200190815260200160002060006101000a81548160ff021916908315150217905550600560008473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600083815260200190815260200160002060009054906101000a900460ff16905092915050565b6118ac6119ef565b73ffffffffffffffffffffffffffffffffffffffff166118ca610a41565b73ffffffffffffffffffffffffffffffffffffffff1614611929576118ed6119ef565b6040517f118cdaa70000000000000000000000000000000000000000000000000000000081526004016119209190611e5f565b60405180910390fd5b565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050816000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055508173ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a35050565b600033905090565b6000604051905090565b600080fd5b600080fd5b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000611a3682611a0b565b9050919050565b611a4681611a2b565b8114611a5157600080fd5b50565b600081359050611a6381611a3d565b92915050565b600080fd5b600080fd5b6000601f19601f8301169050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b611abc82611a73565b810181811067ffffffffffffffff82111715611adb57611ada611a84565b5b80604052505050565b6000611aee6119f7565b9050611afa8282611ab3565b919050565b600067ffffffffffffffff821115611b1a57611b19611a84565b5b611b2382611a73565b9050602081019050919050565b82818337600083830152505050565b6000611b52611b4d84611aff565b611ae4565b905082815260208101848484011115611b6e57611b6d611a6e565b5b611b79848285611b30565b509392505050565b600082601f830112611b9657611b95611a69565b5b8135611ba6848260208601611b3f565b91505092915050565b6000819050919050565b611bc281611baf565b8114611bcd57600080fd5b50565b600081359050611bdf81611bb9565b92915050565b600080600080600080600080610100898b031215611c0657611c05611a01565b5b6000611c148b828c01611a54565b9850506020611c258b828c01611a54565b975050604089013567ffffffffffffffff811115611c4657611c45611a06565b5b611c528b828c01611b81565b965050606089013567ffffffffffffffff811115611c7357611c72611a06565b5b611c7f8b828c01611b81565b9550506080611c908b828c01611bd0565b94505060a0611ca18b828c01611bd0565b93505060c089013567ffffffffffffffff811115611cc257611cc1611a06565b5b611cce8b828c01611b81565b92505060e089013567ffffffffffffffff811115611cef57611cee611a06565b5b611cfb8b828c01611b81565b9150509295985092959890939650565b611d1481611baf565b82525050565b6000602082019050611d2f6000830184611d0b565b92915050565b600060208284031215611d4b57611d4a611a01565b5b6000611d5984828501611bd0565b91505092915050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602160045260246000fd5b60058110611da257611da1611d62565b5b50565b6000819050611db382611d91565b919050565b6000611dc382611da5565b9050919050565b611dd381611db8565b82525050565b6000602082019050611dee6000830184611dca565b92915050565b60008060408385031215611e0b57611e0a611a01565b5b600083013567ffffffffffffffff811115611e2957611e28611a06565b5b611e3585828601611b81565b9250506020611e4685828601611bd0565b9150509250929050565b611e5981611a2b565b82525050565b6000602082019050611e746000830184611e50565b92915050565b600081519050919050565b600082825260208201905092915050565b60005b83811015611eb4578082015181840152602081019050611e99565b60008484015250505050565b6000611ecb82611e7a565b611ed58185611e85565b9350611ee5818560208601611e96565b611eee81611a73565b840191505092915050565b600061012082019050611f0f600083018c611e50565b611f1c602083018b611e50565b8181036040830152611f2e818a611ec0565b90508181036060830152611f428189611ec0565b9050611f516080830188611d0b565b611f5e60a0830187611d0b565b81810360c0830152611f708186611ec0565b905081810360e0830152611f848185611ec0565b9050611f94610100830184611dca565b9a9950505050505050505050565b600060208284031215611fb857611fb7611a01565b5b6000611fc684828501611a54565b91505092915050565b600060a0820190508181036000830152611fe98188611ec0565b90508181036020830152611ffd8187611ec0565b905061200c6040830186611d0b565b818103606083015261201e8185611ec0565b905081810360808301526120328184611ec0565b90509695505050505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b6000600282049050600182168061208557607f821691505b6020821081036120985761209761203e565b5b50919050565b60008190508160005260206000209050919050565b60006020601f8301049050919050565b600082821b905092915050565b6000600883026121007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff826120c3565b61210a86836120c3565b95508019841693508086168417925050509392505050565b6000819050919050565b600061214761214261213d84611baf565b612122565b611baf565b9050919050565b6000819050919050565b6121618361212c565b61217561216d8261214e565b8484546120d0565b825550505050565b600090565b61218a61217d565b612195818484612158565b505050565b5b818110156121b9576121ae600082612182565b60018101905061219b565b5050565b601f8211156121fe576121cf8161209e565b6121d8846120b3565b810160208510156121e7578190505b6121fb6121f3856120b3565b83018261219a565b50505b505050565b600082821c905092915050565b600061222160001984600802612203565b1980831691505092915050565b600061223a8383612210565b9150826002028217905092915050565b61225382611e7a565b67ffffffffffffffff81111561226c5761226b611a84565b5b612276825461206d565b6122818282856121bd565b600060209050601f8311600181146122b457600084156122a2578287015190505b6122ac858261222e565b865550612314565b601f1984166122c28661209e565b60005b828110156122ea578489015182556001820191506020850194506020810190506122c5565b868310156123075784890151612303601f891682612210565b8355505b6001600288020188555050505b505050505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b600061235682611baf565b915061236183611baf565b92508282039050818111156123795761237861231c565b5b92915050565b60006060820190506123946000830186611e50565b81810360208301526123a68185611ec0565b90506123b56040830184611d0b565b949350505050565b7f41646472657373206e6f7420417574686f72697a65642052656369657665722060008201527f666f7220746869732042696c6c206f66204c616e64696e672049440000000000602082015250565b6000612419603b83611e85565b9150612424826123bd565b604082019050919050565b600060208201905081810360008301526124488161240c565b9050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b7f44656c6965766572792063616e6e6f74206265206163636570746564206f722060008201527f72656a656374656420696e206f7264657220746f2063616e63656c0000000000602082015250565b60006124da603b83611e85565b91506124e58261247e565b604082019050919050565b60006020820190508181036000830152612509816124cd565b9050919050565b600081905092915050565b600081546125288161206d565b6125328186612510565b9450600182166000811461254d576001811461256257612595565b60ff1983168652811515820286019350612595565b61256b8561209e565b60005b8381101561258d5781548189015260018201915060208101905061256e565b838801955050505b50505092915050565b60006125aa828461251b565b915081905092915050565b7f43757272656e74206c6f636174696f6e206f6620636172676f2063616e6e6f7460008201527f2062652061742066696e616c2064657374696e6174696f6e20746f2063616e6360208201527f656c000000000000000000000000000000000000000000000000000000000000604082015250565b6000612637604283611e85565b9150612642826125b5565b606082019050919050565b600060208201905081810360008301526126668161262a565b9050919050565b7f41646472657373206e6f7420417574686f72697a65642053656e64657220666f60008201527f7220746869732042696c6c206f66204c616e64696e6720494400000000000000602082015250565b60006126c9603983611e85565b91506126d48261266d565b604082019050919050565b600060208201905081810360008301526126f8816126bc565b9050919050565b7f44656c69657665727920737461747573206d75737420626520696e2050656e6460008201527f696e6720737461746520746f2073686970000000000000000000000000000000602082015250565b600061275b603183611e85565b9150612766826126ff565b604082019050919050565b6000602082019050818103600083015261278a8161274e565b9050919050565b6000815461279e8161206d565b6127a88186611e85565b945060018216600081146127c357600181146127d95761280c565b60ff19831686528115156020028601935061280c565b6127e28561209e565b60005b83811015612804578154818901526001820191506020810190506127e5565b808801955050505b50505092915050565b6000604082019050818103600083015261282f8185612791565b905081810360208301526128438184612791565b90509392505050565b7f44656c69657665727920737461747573206d75737420626520696e205368697060008201527f70696e6720737461746520746f20736869700000000000000000000000000000602082015250565b60006128a8603283611e85565b91506128b38261284c565b604082019050919050565b600060208201905081810360008301526128d78161289b565b9050919050565b7f43757272656e74206c6f636174696f6e206f6620636172676f206d757374206260008201527f652061742066696e616c2064657374696e6174696f6e20746f2072656a656374602082015250565b600061293a604083611e85565b9150612945826128de565b604082019050919050565b600060208201905081810360008301526129698161292d565b9050919050565b7f43757272656e74206c6f636174696f6e206f6620636172676f206d757374206260008201527f652061742066696e616c2064657374696e6174696f6e20746f20616363657074602082015250565b60006129cc604083611e85565b91506129d782612970565b604082019050919050565b600060208201905081810360008301526129fb816129bf565b905091905056fea26469706673582212204b8179a75172f9b94372265ce9dbfb6ff5da5fddf37feb21abdb67719be1f3c964736f6c63430008180033","linkReferences":{},"deployedLinkReferences":{}}');
+
+},{}],"hdHML":[function(require,module,exports) {
+/**
+ *  The Application Programming Interface (API) is the collection of
+ *  functions, classes and types offered by the Ethers library.
+ *
+ *  @_section: api:Application Programming Interface  [about-api]
+ *  @_navTitle: API
+ */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "ethers", ()=>_ethersJs);
+var _ethersJs = require("./ethers.js");
+parcelHelpers.exportAll(_ethersJs, exports);
+
+},{"./ethers.js":false,"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || Object.prototype.hasOwnProperty.call(dest, key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}]},["jR4nV","f9yMX"], "f9yMX", "parcelRequire94c2")
+
+</script>
