@@ -115,6 +115,9 @@ contract Shipping is Ownable {
     mapping (address => mapping (uint256 => bool)) private SenderRole;
     mapping (address => mapping (uint256 => bool)) private ReceiverRole;
 
+    // A mapping to return the company transporting the goods
+    mapping(uint256 => address) public transporter;
+
     // MAPPINGS CODE BLOCKS ENDS
 
 
@@ -129,8 +132,8 @@ contract Shipping is Ownable {
         _;
     }
 
-    modifier onlyTransactionParty(uint256 _cargoId){
-        require(ReceiverRole[msg.sender][_cargoId]);
+    modifier onlyTransporter(uint256 _cargoId){
+        require(msg.sender == transporter[_cargoId]);
         _;
     }
 
@@ -183,9 +186,10 @@ contract Shipping is Ownable {
         return SenderRole[roleRecipient][roleCargoId];
     }
 
-    function shipCargo(uint256 _bolId) external onlySender(_bolId) returns(Status){
+    function shipCargo(uint256 _bolId, address _transporter) external onlySender(_bolId) returns(Status){
         require(bols[_bolId].deliveryStatus == Status.Pending, "Delievery status must be in Pending state to ship");
         bols[_bolId].deliveryStatus = Status.Shipping;
+        transporter[_bolId] = _transporter;
         return bols[_bolId].deliveryStatus;
     }
 
@@ -268,7 +272,7 @@ contract Shipping is Ownable {
     // }
 
     // To check the item's current location
-    function updateLocation(string memory _currentLocation, uint256 _cargoId) external onlySender(_cargoId){
+    function updateLocation(string memory _currentLocation, uint256 _cargoId) external onlyTransporter(_cargoId){
         require(bols[_cargoId].deliveryStatus == Status.Shipping, "Delievery status must be in Pending state to ship");
         bols[_cargoId].currentLocation = _currentLocation;
         emit updatedLocation(msg.sender, bols[_cargoId].currentLocation, bols[_cargoId].finalDestination);
@@ -288,17 +292,10 @@ contract Shipping is Ownable {
 
     }
 
-    //Updating Status Enums for cargo structs and BOL
+    
 
 
-    // function paymentSent() public {
-    //     require(isReceived=true, "item has arrived at destination");
-    //     require(address(this).balance >= paymentAmount, "Insufficient balance to make the payment"); 
-    //     (bool success, ) = seller.call{value: shippingCost}(""); 
-    //     require(success, "Payment transfer failed"); 
-    //     emit PaymentSent();
-        
-    // }
+    
 
 
 
