@@ -62,15 +62,15 @@ contract Shipping is Ownable {
     //ALL EVENTS 
 
 	//event to broadcast that cargo have been created
-	event cargoCreated(address indexed _sender, address _receiver, string _material, uint256 _materialCount);
+	event billOfLandingCreated(address indexed _sender, address _receiver, string _material, uint256 _materialCount);
 	//event to broadcast that cargo has been shipped
-	event cargoShipped(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
+	event billOfLandingShipped(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
 	//event to broadcast that cargo has been received
-	event cargoReceived(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
+	event billOfLandingReceived(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
 	//event to update that the order location has been updated
 	event updatedLocation(address indexed _sender, string _currentLocation, string _finalDestination);
 	//event to broadcast that a bill of lading has been created
-	event billOfLandingCreated(uint256 _orderId);
+	// event billOfLandingCreated(uint256 _orderId);
 	//event to broadcast that a bill of lading has been updated
 	event billOfLandingUpdated(uint256 _orderId);
 	//event to broadcast that payment has been made
@@ -256,14 +256,14 @@ contract Shipping is Ownable {
         });
 
         bols.push(newBol);
-        uint256 cargoId = bols.length - 1;
+        uint256 newBolId = bols.length - 1;
 
-        addSenderRole(newBol.sender, cargoId);
-        addReceiverRole(newBol.receiver, cargoId);
+        addSenderRole(newBol.sender, newBolId);
+        addReceiverRole(newBol.receiver, newBolId);
 
-        emit cargoCreated(newBol.sender, newBol.receiver, newBol.material, newBol.materialCount);
+        emit billOfLandingCreated(newBol.sender, newBol.receiver, newBol.material, newBol.materialCount);
 
-        return cargoId;
+        return newBolId;
     }
 
     
