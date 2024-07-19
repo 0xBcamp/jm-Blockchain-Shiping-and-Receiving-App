@@ -17,10 +17,10 @@ contract Shipping is Ownable {
         Canceled
     }
 
-    // enum TransactionRole{
-    //     sender,
-    //     receiver
-    // }
+     enum TransactionRole {
+        sender,
+        receiver
+    }
 
     // ENUM CODE ENDS
 
@@ -83,17 +83,13 @@ contract Shipping is Ownable {
     //EVENT CODE ENDS
 
     //ALL VARIABLES
-    // TransactionRole senderRole = TransactionRole.sender;
-    // TransactionRole receiverRole = TransactionRole.receiver;
-    /* address sender; //the msg.sender
-    address receiver; //the receiver address
-	string deliveryDestination; //the delivery destination of the order
-	uint256 shippingCost; //the cost of shipping
-	bool isShipped; //A boolean to check if the order has been shipped
-	bool isReceived; //A boolean to check if the order has been received
-    string currentLocation; //A boolean to get the currentLocation of the order */
-    // Status status;
-    Billoflanding[] bols;
+    TransactionRole senderRole = TransactionRole.sender;
+    TransactionRole receiverRole = TransactionRole.receiver;
+    
+    //cargo array variable
+    Cargo[] cargo;
+
+    Billoflading[] bols;
 
     //VARIABLE CODE ENDS
 
@@ -102,22 +98,25 @@ contract Shipping is Ownable {
     //ALL MAPPINGS
 
 	//A mapping to return the transaction history of a particular company
-	// mapping(address  =>(mapping(TransactionRole senderRole => uint256[]),
-    // mapping(TransactionRole receiver => uint256[]))) private companyTransactionHistory;
+    mapping(address => mapping(TransactionRole => uint256[])) private companyTransactionHistory;
 
 	//A mapping to return the details of a companyData
 	mapping(address => Company) public companyInfo;
 	
 	//A mapping to return the Cargo and it BillofLading for a particular orderId ??
-	// mapping(uint256 => (Cargo, Billoflading)) public orderId;
+	mapping(uint256 => Cargo) public orderId;
 
     // A mapping to return the bill of landing Id
-    mapping (uint256 => Billoflanding) public bolId;
+    mapping(uint256 => Billoflading) public bolId;
+    
+    //A mapping to return the location of the cargo
+    mapping(uint256 => string) public location;
 
     mapping (address => mapping (uint256 => bool)) private SenderRole;
     mapping (address => mapping (uint256 => bool)) private ReceiverRole;
 
     // MAPPINGS CODE BLOCKS ENDS
+
 
     //ALL MODIFIERS
     modifier onlyReceiver(uint256 _bolId) {
@@ -130,24 +129,40 @@ contract Shipping is Ownable {
         _;
     }
 
+    modifier onlyTransactionParty(uint256 _cargoId){
+        require(ReceiverRole[msg.sender][_cargoId]);
+        _;
+    }
+
     // MODIFIER CODE BLOCK ENDS
 
     // CONSTRUCTOR 
 
     constructor() Ownable(msg.sender){
-        // status = Status.Pending;
+        
         
     }
 
-    // ALL FUNCTIONS 
+    // ALL FUNCTIONS
 
-    /* function payment() external payable {
+    // payment related function  
+
+    function payment(uint256 _amount) payable {
+
 
     }
 
-    function widthdrawal() external payable{
+    function widthdrawal(uint256 _amount) payable{
 
-    } */
+    }
+
+    function fallback() payable{
+
+    }
+
+    function receive() payable{
+
+    }
 
 
     function addReceiverRole(address roleRecipient, uint256 roleCargoId) internal onlyOwner returns(bool){
@@ -187,7 +202,19 @@ contract Shipping is Ownable {
         return bols[_bolId].deliveryStatus;
     }
 
-    function registerCompany() public {}
+    function registerCompany(string _name, 
+            string _email, 
+            string _phoneNo,
+            string _website,
+            string _companyaddress
+             ) public {
+
+              Company memory company = new Company(_name, _email, _phoneNo, _website, _companyaddress);
+
+              companyInfo[msg.sender] = company;
+
+
+    }
 
     function addBillofLanding(address _sender, 
                     address _receiver, 
@@ -258,4 +285,20 @@ contract Shipping is Ownable {
     //     emit PaymentSent();
         
     // }
+
+
+
+    // RETURN FUNCTIONS
+
+    function getBillOfLading(_id) public pure returns (Billoflading memory){
+        return bolId[_id];
+
+
+    }
+
+    function getLatestLocation(uint256 _id) public pure returns (string memory){
+        return location[_id];
+    }
+
+
 }
