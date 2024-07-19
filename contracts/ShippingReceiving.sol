@@ -85,14 +85,8 @@ contract Shipping is Ownable {
     //ALL VARIABLES
     TransactionRole senderRole = TransactionRole.sender;
     TransactionRole receiverRole = TransactionRole.receiver;
-    /* address sender; //the msg.sender
-    address receiver; //the receiver address
-	string deliveryDestination; //the delivery destination of the order
-	uint256 shippingCost; //the cost of shipping
-	bool isShipped; //A boolean to check if the order has been shipped
-	bool isReceived; //A boolean to check if the order has been received
-    string currentLocation; //A boolean to get the currentLocation of the order */
-    Status status;
+    
+
     Billoflading[] bols;
 
     //VARIABLE CODE ENDS
@@ -149,11 +143,22 @@ contract Shipping is Ownable {
 
     // ALL FUNCTIONS
 
-    function payment() payable {
+    // payment related function  
+
+    function payment(uint256 _amount) payable {
+
 
     }
 
-    function widthdrawal() payable{
+    function widthdrawal(uint256 _amount) payable{
+
+    }
+
+    function fallback() payable{
+
+    }
+
+    function receive() payable{
 
     }
 
@@ -169,7 +174,7 @@ contract Shipping is Ownable {
     }
 
     function shipCargo(uint256 _bolId) external onlySender(_bolId) returns(Status){
-        require(bols[_bolId].deliveryStatus == Status.Pending, "Delievery status must be in Pending state to ship");
+        require(bols[_bolId].deliveryStatus == status, "Delievery status must be in Pending state to ship");
         bols[_bolId].deliveryStatus = Status.Shipping;
         return bols[_bolId].deliveryStatus;
     }
