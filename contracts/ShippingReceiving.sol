@@ -93,7 +93,7 @@ contract Shipping is Ownable {
 	bool isReceived; //A boolean to check if the order has been received
     string currentLocation; //A boolean to get the currentLocation of the order */
     // Status status;
-    Billoflanding[] bols;
+    Billoflading[] bols;
 
     //VARIABLE CODE ENDS
 
@@ -283,7 +283,7 @@ contract Shipping is Ownable {
 
     // RETURN FUNCTIONS
 
-    function getBillOfLading(_id) public pure returns (memory Billoflading){
+    function getBillOfLading(_id) public pure returns (memory   Billoflading){
         return bolId[_id];
 
 
