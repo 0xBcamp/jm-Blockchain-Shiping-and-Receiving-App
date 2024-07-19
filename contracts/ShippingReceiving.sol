@@ -62,15 +62,19 @@ contract Shipping is Ownable {
     //ALL EVENTS 
 
 	//event to broadcast that cargo have been created
-	event billOfLandingCreated(address indexed _sender, address _receiver, string _material, uint256 _materialCount);
+	event cargoCreated(address indexed _sender, address _receiver, string _material, uint256 _materialCount);
 	//event to broadcast that cargo has been shipped
-	event billOfLandingShipped(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
+	event cargoShipped(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
 	//event to broadcast that cargo has been received
-	event billOfLandingReceived(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
+	event cargoReceived(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
+    // event to broadcast that cargo has been rejected
+    event rejectedCargo(uint256 _cargoId);
+    // event to update that the cargo was cancelled
+    event cancelledCargo(uint256 _cargoId);
 	//event to update that the order location has been updated
 	event updatedLocation(address indexed _sender, string _currentLocation, string _finalDestination);
 	//event to broadcast that a bill of lading has been created
-	// event billOfLandingCreated(uint256 _orderId);
+	event billOfLandingCreated(uint256 _orderId);
 	//event to broadcast that a bill of lading has been updated
 	event billOfLandingUpdated(uint256 _orderId);
 	//event to broadcast that payment has been made
@@ -176,6 +180,8 @@ contract Shipping is Ownable {
     // Custom Error function ends
 
 
+
+    // Shipping Functions Begins
     function addReceiverRole(address roleRecipient, uint256 roleCargoId) internal onlyOwner returns(bool){
         ReceiverRole[roleRecipient][roleCargoId] = true;
         return ReceiverRole[roleRecipient][roleCargoId];
@@ -190,6 +196,8 @@ contract Shipping is Ownable {
         require(bols[_bolId].deliveryStatus == Status.Pending, "Delievery status must be in Pending state to ship");
         bols[_bolId].deliveryStatus = Status.Shipping;
         transporter[_bolId] = _transporter;
+
+        
         return bols[_bolId].deliveryStatus;
     }
 
@@ -197,6 +205,7 @@ contract Shipping is Ownable {
         require(bols[_bolId].deliveryStatus == Status.Shipping, "Delievery status must be in Shipping state to ship");
         require(keccak256(abi.encodePacked(bols[_bolId].finalDestination)) == keccak256(abi.encodePacked(bols[_bolId].currentLocation)), "Current location of cargo must be at final destination to accept");
         bols[_bolId].deliveryStatus = Status.Accepted;
+
         return bols[_bolId].deliveryStatus;
     }
 
@@ -204,6 +213,8 @@ contract Shipping is Ownable {
         require(bols[_bolId].deliveryStatus == Status.Shipping, "Delievery status must be in Shipping state to ship");
         require(keccak256(abi.encodePacked(bols[_bolId].finalDestination)) == keccak256(abi.encodePacked(bols[_bolId].currentLocation)), "Current location of cargo must be at final destination to reject");
         bols[_bolId].deliveryStatus = Status.Rejected;
+
+        emit rejectedCargo(_bolId);
         return bols[_bolId].deliveryStatus;
     }
 
@@ -211,6 +222,8 @@ contract Shipping is Ownable {
         require(bols[_bolId].deliveryStatus != Status.Accepted || bols[_bolId].deliveryStatus != Status.Rejected, "Delievery cannot be accepted or rejected in order to cancel");
         require(keccak256(abi.encodePacked(bols[_bolId].finalDestination)) != keccak256(abi.encodePacked(bols[_bolId].currentLocation)), "Current location of cargo cannot be at final destination to cancel");
         bols[_bolId].deliveryStatus = Status.Canceled;
+
+        emit cancelledCargo(_bolId);
         return bols[_bolId].deliveryStatus;
     }
 
@@ -256,17 +269,17 @@ contract Shipping is Ownable {
         });
 
         bols.push(newBol);
-        uint256 newBolId = bols.length - 1;
+        uint256 cargoId = bols.length - 1;
 
-        addSenderRole(newBol.sender, newBolId);
-        addReceiverRole(newBol.receiver, newBolId);
+        addSenderRole(newBol.sender, cargoId);
+        addReceiverRole(newBol.receiver, cargoId);
 
-        emit billOfLandingCreated(newBol.sender, newBol.receiver, newBol.material, newBol.materialCount);
+        emit cargoCreated(newBol.sender, newBol.receiver, newBol.material, newBol.materialCount);
 
-        return newBolId;
+        return cargoId;
     }
 
-    
+   
     function updateLocation(string memory _currentLocation, uint256 _cargoId) external onlyTransporter(_cargoId){
         require(bols[_cargoId].deliveryStatus == Status.Shipping, "Delievery status must be in Pending state to ship");
         bols[_cargoId].currentLocation = _currentLocation;
