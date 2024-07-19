@@ -62,15 +62,15 @@ contract Shipping is Ownable {
     //ALL EVENTS 
 
 	//event to broadcast that cargo have been created
-	event cargoCreated(address indexed _sender, address _receiver, string _material, uint256 _materialCount);
+	event bolCreated(address indexed _sender, address _receiver, string _material, uint256 _materialCount);
 	//event to broadcast that cargo has been shipped
-	event cargoShipped(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
+	event bolShipped(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
 	//event to broadcast that cargo has been received
-	event cargoReceived(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
+	event bolReceived(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
     // event to broadcast that cargo has been rejected
-    event rejectedCargo(uint256 _cargoId);
+    event rejectedBol(uint256 _bolId);
     // event to update that the cargo was cancelled
-    event cancelledCargo(uint256 _cargoId);
+    event cancelledBol(uint256 _bolId);
 	//event to update that the order location has been updated
 	event updatedLocation(address indexed _sender, string _currentLocation, string _finalDestination);
 	//event to broadcast that a bill of lading has been created
@@ -192,7 +192,7 @@ contract Shipping is Ownable {
         return SenderRole[roleRecipient][roleCargoId];
     }
 
-    function shipCargo(uint256 _bolId, address _transporter) external onlySender(_bolId) returns(Status){
+    function shipBol(uint256 _bolId, address _transporter) external onlySender(_bolId) returns(Status){
         require(bols[_bolId].deliveryStatus == Status.Pending, "Delievery status must be in Pending state to ship");
         bols[_bolId].deliveryStatus = Status.Shipping;
         transporter[_bolId] = _transporter;
@@ -201,7 +201,7 @@ contract Shipping is Ownable {
         return bols[_bolId].deliveryStatus;
     }
 
-    function acceptCargo(uint256 _bolId) external onlyReceiver(_bolId) returns(Status){
+    function acceptBol(uint256 _bolId) external onlyReceiver(_bolId) returns(Status){
         require(bols[_bolId].deliveryStatus == Status.Shipping, "Delievery status must be in Shipping state to ship");
         require(keccak256(abi.encodePacked(bols[_bolId].finalDestination)) == keccak256(abi.encodePacked(bols[_bolId].currentLocation)), "Current location of cargo must be at final destination to accept");
         bols[_bolId].deliveryStatus = Status.Accepted;
@@ -209,21 +209,21 @@ contract Shipping is Ownable {
         return bols[_bolId].deliveryStatus;
     }
 
-    function rejectCargo(uint256 _bolId) external onlyReceiver(_bolId) returns(Status){
+    function rejectBol(uint256 _bolId) external onlyReceiver(_bolId) returns(Status){
         require(bols[_bolId].deliveryStatus == Status.Shipping, "Delievery status must be in Shipping state to ship");
         require(keccak256(abi.encodePacked(bols[_bolId].finalDestination)) == keccak256(abi.encodePacked(bols[_bolId].currentLocation)), "Current location of cargo must be at final destination to reject");
         bols[_bolId].deliveryStatus = Status.Rejected;
 
-        emit rejectedCargo(_bolId);
+        emit rejectedBol(_bolId);
         return bols[_bolId].deliveryStatus;
     }
 
-    function cancelCargo(uint256 _bolId) external onlyReceiver(_bolId) returns(Status){
+    function cancelBol(uint256 _bolId) external onlyReceiver(_bolId) returns(Status){
         require(bols[_bolId].deliveryStatus != Status.Accepted || bols[_bolId].deliveryStatus != Status.Rejected, "Delievery cannot be accepted or rejected in order to cancel");
         require(keccak256(abi.encodePacked(bols[_bolId].finalDestination)) != keccak256(abi.encodePacked(bols[_bolId].currentLocation)), "Current location of cargo cannot be at final destination to cancel");
         bols[_bolId].deliveryStatus = Status.Canceled;
 
-        emit cancelledCargo(_bolId);
+        emit cancelledBol(_bolId);
         return bols[_bolId].deliveryStatus;
     }
 
@@ -274,7 +274,7 @@ contract Shipping is Ownable {
         addSenderRole(newBol.sender, cargoId);
         addReceiverRole(newBol.receiver, cargoId);
 
-        emit cargoCreated(newBol.sender, newBol.receiver, newBol.material, newBol.materialCount);
+        emit bolCreated(newBol.sender, newBol.receiver, newBol.material, newBol.materialCount);
 
         return cargoId;
     }
