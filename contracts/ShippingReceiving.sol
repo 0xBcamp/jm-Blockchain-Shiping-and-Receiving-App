@@ -17,10 +17,10 @@ contract Shipping is Ownable {
         Canceled
     }
 
-    // enum TransactionRole{
-    //     sender,
-    //     receiver
-    // }
+     enum TransactionRole{
+        sender,
+        receiver
+    }
 
     // ENUM CODE ENDS
 
@@ -86,6 +86,8 @@ contract Shipping is Ownable {
     TransactionRole senderRole = TransactionRole.sender;
     TransactionRole receiverRole = TransactionRole.receiver;
     
+    //cargo array variable
+    Cargo[] cargo;
 
     Billoflading[] bols;
 
@@ -96,7 +98,7 @@ contract Shipping is Ownable {
     //ALL MAPPINGS
 
 	//A mapping to return the transaction history of a particular company
-    mapping(address =>mapping(TransactionRole => uint256[])) private companyTransactionHistory;
+    mapping(address => mapping(TransactionRole => uint256[])) private companyTransactionHistory;
 
 	//A mapping to return the details of a companyData
 	mapping(address => Company) public companyInfo;
