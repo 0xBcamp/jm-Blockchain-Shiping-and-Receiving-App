@@ -92,7 +92,7 @@ contract Shipping is Ownable {
 	bool isShipped; //A boolean to check if the order has been shipped
 	bool isReceived; //A boolean to check if the order has been received
     string currentLocation; //A boolean to get the currentLocation of the order */
-    // Status status;
+    Status status;
     Billoflading[] bols;
 
     //VARIABLE CODE ENDS
@@ -108,7 +108,7 @@ contract Shipping is Ownable {
 	mapping(address => Company) public companyInfo;
 	
 	//A mapping to return the Cargo and it BillofLading for a particular orderId ??
-	mapping(uint256 =>Cargo) public orderId;
+	mapping(uint256 => Cargo) public orderId;
 
     // A mapping to return the bill of landing Id
     mapping(uint256 => Billoflading) public bolId;
@@ -143,7 +143,7 @@ contract Shipping is Ownable {
     // CONSTRUCTOR 
 
     constructor() Ownable(msg.sender){
-        // status = Status.Pending;
+        status = Status.Pending;
         
     }
 
