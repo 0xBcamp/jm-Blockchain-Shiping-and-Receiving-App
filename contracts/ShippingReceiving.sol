@@ -130,7 +130,7 @@ contract Shipping is Ownable {
     }
 
     modifier onlyTransactionParty(uint256 _cargoId){
-        require(ReceiverRole[msg.sender][_cargoId])
+        require(ReceiverRole[msg.sender][_cargoId]);
         _;
     }
 
@@ -209,7 +209,7 @@ contract Shipping is Ownable {
             string _companyaddress
              ) public {
 
-              Company memory company = new Company(_name, _email, _phoneNo, _website, _companyaddress)
+              Company memory company = new Company(_name, _email, _phoneNo, _website, _companyaddress);
 
               companyInfo[msg.sender] = company;
 
@@ -290,13 +290,13 @@ contract Shipping is Ownable {
 
     // RETURN FUNCTIONS
 
-    function getBillOfLading(_id) public pure returns (memory   Billoflading){
+    function getBillOfLading(_id) public pure returns (Billoflading memory){
         return bolId[_id];
 
 
     }
 
-    function getLatestLocation(uint256 _id) public pure returns (memory string){
+    function getLatestLocation(uint256 _id) public pure returns (string memory){
         return location[_id];
     }
 
