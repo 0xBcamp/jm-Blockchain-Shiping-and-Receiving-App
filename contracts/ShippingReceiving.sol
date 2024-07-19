@@ -102,25 +102,25 @@ contract Shipping is Ownable {
     //ALL MAPPINGS
 
 	//A mapping to return the transaction history of a particular company
-	// mapping(address  =>(mapping(TransactionRole senderRole => uint256[]),
-    // mapping(TransactionRole receiver => uint256[]))) private companyTransactionHistory;
+    mapping(address =>mapping(TransactionRole => uint256[])) private companyTransactionHistory;
 
 	//A mapping to return the details of a companyData
 	mapping(address => Company) public companyInfo;
 	
 	//A mapping to return the Cargo and it BillofLading for a particular orderId ??
-	// mapping(uint256 => (Cargo, Billoflading)) public orderId;
+	mapping(uint256 =>Cargo) public orderId;
 
     // A mapping to return the bill of landing Id
-    mapping (uint256 => Billoflanding) public bolId;
+    mapping(uint256 => Billoflading) public bolId;
     
     //A mapping to return the location of the cargo
-    mapping(uint256 => string) public location
+    mapping(uint256 => string) public location;
 
     mapping (address => mapping (uint256 => bool)) private SenderRole;
     mapping (address => mapping (uint256 => bool)) private ReceiverRole;
 
     // MAPPINGS CODE BLOCKS ENDS
+
 
     //ALL MODIFIERS
     modifier onlyReceiver(uint256 _bolId) {
