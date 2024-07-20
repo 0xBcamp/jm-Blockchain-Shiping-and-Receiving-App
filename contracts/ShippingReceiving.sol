@@ -28,7 +28,6 @@ contract Shipping is Ownable {
 
     //a customized data structure for bill of lading
     struct Cargo {
-        uint256 orderId;
         address senderOfGoods;
         address receiverOfBill;
         Status deliveryStatus; 
@@ -227,11 +226,11 @@ contract Shipping is Ownable {
         return bols[_bolId].deliveryStatus;
     }
 
-    function registerCompany(string memory _name, 
-            string memory _email, 
+    function registerCompany(string calldata _name, 
+            string calldata _email, 
             uint256 _phoneNo,
-            string memory _website,
-            string memory _companyaddress
+            string calldata _website,
+            string calldata _companyaddress
              ) public {
 
               Company memory company = Company({
@@ -249,12 +248,12 @@ contract Shipping is Ownable {
 
     function addBillofLanding(address _sender, 
                     address _receiver, 
-                    string memory _currentLocation,
-                    string memory _material, 
+                    string calldata _currentLocation,
+                    string calldata _material, 
                     uint256 _materialCount, 
                     uint256 _materialCost,
-                    string memory _specialInstructions,
-                    string memory _finalDestination               
+                    string calldata _specialInstructions,
+                    string calldata _finalDestination               
     ) external returns(uint256){
         Billoflading memory newBol = Billoflading({
             sender: _sender,
@@ -269,18 +268,35 @@ contract Shipping is Ownable {
         });
 
         bols.push(newBol);
-        uint256 cargoId = bols.length - 1;
+        uint256 newBolId = bols.length - 1;
 
-        addSenderRole(newBol.sender, cargoId);
-        addReceiverRole(newBol.receiver, cargoId);
+        addSenderRole(newBol.sender, newBolId);
+        addReceiverRole(newBol.receiver, newBolId);
 
         emit bolCreated(newBol.sender, newBol.receiver, newBol.material, newBol.materialCount);
 
-        return cargoId;
+        return newBolId;
     }
 
+    function addCargo(
+        address _senderOfGoods,
+        address _receiverOfBill, 
+        uint256[] calldata _bolIDs) external onlyOwner returns(uint256){
+            Cargo memory newCargo = Cargo({
+                senderOfGoods: _senderOfGoods,
+                receiverOfBill: _receiverOfBill,
+                deliveryStatus: Status.Pending,
+                bolIDs: _bolIDs
+            });
+
+            cargo.push(newCargo);
+            uint256 newCargoId = cargo.length - 1;
+
+            return newCargoId;
+        }
+
    
-    function updateLocation(string memory _currentLocation, uint256 _cargoId) external onlyTransporter(_cargoId){
+    function updateLocation(string calldata _currentLocation, uint256 _cargoId) external onlyTransporter(_cargoId){
         require(bols[_cargoId].deliveryStatus == Status.Shipping, "Delievery status must be in Pending state to ship");
         bols[_cargoId].currentLocation = _currentLocation;
         emit updatedLocation(msg.sender, bols[_cargoId].currentLocation, bols[_cargoId].finalDestination);
