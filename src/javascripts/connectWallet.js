@@ -13,7 +13,7 @@ let isConnected = false;
 let provider;
 
 connectBtn.addEventListener('click', async () => {
-    if (typeof window.ethereum !== 'null') {
+    if (typeof window.ethereum !== 'undefined') {
         try {
             isConnectedValue.innerText = 'Loading...';
             // Request account access if needed
@@ -36,6 +36,10 @@ connectBtn.addEventListener('click', async () => {
             addressValue.innerText = `Address: ${address}`;
             isConnectedValue.innerText = 'Connected';
             isConnected = true;
+
+            // Set the address value to local storage
+            localStorage.setItem('userAddress', address);
+            console.log("localStorage updated")
 
             console.log("step 5")
             // Your contract setup can go here
