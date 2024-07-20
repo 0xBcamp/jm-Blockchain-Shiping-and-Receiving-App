@@ -226,11 +226,11 @@ contract Shipping is Ownable {
         return bols[_bolId].deliveryStatus;
     }
 
-    function registerCompany(string calldata _name, 
-            string calldata _email, 
+    function registerCompany(string memory _name, 
+            string memory _email, 
             uint256 _phoneNo,
-            string calldata _website,
-            string calldata _companyaddress
+            string memory _website,
+            string memory _companyaddress
              ) public {
 
               Company memory company = Company({
@@ -248,12 +248,12 @@ contract Shipping is Ownable {
 
     function addBillofLanding(address _sender, 
                     address _receiver, 
-                    string calldata _currentLocation,
-                    string calldata _material, 
+                    string memory _currentLocation,
+                    string memory _material, 
                     uint256 _materialCount, 
                     uint256 _materialCost,
-                    string calldata _specialInstructions,
-                    string calldata _finalDestination               
+                    string memory _specialInstructions,
+                    string memory _finalDestination               
     ) external returns(uint256){
         Billoflading memory newBol = Billoflading({
             sender: _sender,
@@ -281,7 +281,7 @@ contract Shipping is Ownable {
     function addCargo(
         address _senderOfGoods,
         address _receiverOfBill, 
-        uint256[] calldata _bolIDs) external onlyOwner returns(uint256){
+        uint256[] memory _bolIDs) external onlyOwner returns(uint256){
             Cargo memory newCargo = Cargo({
                 senderOfGoods: _senderOfGoods,
                 receiverOfBill: _receiverOfBill,
@@ -296,7 +296,7 @@ contract Shipping is Ownable {
         }
 
    
-    function updateLocation(string calldata _currentLocation, uint256 _cargoId) external onlyTransporter(_cargoId){
+    function updateLocation(string memory _currentLocation, uint256 _cargoId) external onlyTransporter(_cargoId){
         require(bols[_cargoId].deliveryStatus == Status.Shipping, "Delievery status must be in Pending state to ship");
         bols[_cargoId].currentLocation = _currentLocation;
         emit updatedLocation(msg.sender, bols[_cargoId].currentLocation, bols[_cargoId].finalDestination);
