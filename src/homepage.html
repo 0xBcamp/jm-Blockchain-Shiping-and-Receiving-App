@@ -7,21 +7,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../public/homepage.css">
-    <link rel="import" href="./header.html">
+    <script src="./javascripts/header.js" type="text/javascript" defer></script>
+    <script type="module" src="./javascripts/connectWallet.js"></script>
     <title>Shipping and Receiving App</title>
 </head>
 <body>
-    
-    <header>
-        <nav class="nav-bar">
-            <h3><a href="./homepage.html">Shipping and Receiving App</a></h3>
-            <div class="right-nav-bar">
-                <h3 style="padding-right: 20px;"><a href="./shipping.html">Ship Delivery</a></h3>
-                <button class="connect-btn">Connect Wallet</button>
-            </div>
-        </nav>
-    </header>
-
     <div class="tracking-section">
         <img src="../public/image/cargos-img.png" alt="cargo image" width="100%">
         <div class="tracking-layout">
@@ -71,5 +61,5 @@
 </html>
 
 <script>
-    var content = document.querySelector('link[rel="import"]').import;
+    
 </script>
