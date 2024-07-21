@@ -17,6 +17,11 @@ contract Shipping is Ownable {
         Canceled
     }
 
+    enum Authorization{
+        Sender,
+        Receiver
+    }
+
      enum TransactionRole {
         sender,
         receiver
@@ -28,6 +33,7 @@ contract Shipping is Ownable {
 
     //a customized data structure for bill of lading
     struct Cargo {
+        uint256 orderId;
         address senderOfGoods;
         address receiverOfBill;
         Status deliveryStatus; 
@@ -54,6 +60,7 @@ contract Shipping is Ownable {
         string specialInstructions;
         string finalDestination;
         Status deliveryStatus;
+        Authorization authorizedOwner;
     }
 
     // STRUCT CODE ENDS
@@ -61,15 +68,15 @@ contract Shipping is Ownable {
     //ALL EVENTS 
 
 	//event to broadcast that cargo have been created
-	event bolCreated(address indexed _sender, address _receiver, string _material, uint256 _materialCount);
+	event cargoCreated(address indexed _sender, address _receiver, string _material, uint256 _materialCount);
 	//event to broadcast that cargo has been shipped
-	event bolShipped(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
+	event cargoShipped(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
 	//event to broadcast that cargo has been received
-	event bolReceived(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
+	event cargoReceived(address indexed _sender, string _specialInstructions, Status _deliveryStatus);
     // event to broadcast that cargo has been rejected
-    event rejectedBol(uint256 _bolId);
+    event rejectedCargo(uint256 _cargoId);
     // event to update that the cargo was cancelled
-    event cancelledBol(uint256 _bolId);
+    event cancelledCargo(uint256 _cargoId);
 	//event to update that the order location has been updated
 	event updatedLocation(address indexed _sender, string _currentLocation, string _finalDestination);
 	//event to broadcast that a bill of lading has been created
@@ -121,6 +128,9 @@ contract Shipping is Ownable {
     // A mapping to return the company transporting the goods
     mapping(uint256 => address) public transporter;
 
+    // A mapping for payments in the contract
+    mapping(address => uint256) private accounts;
+
     // MAPPINGS CODE BLOCKS ENDS
 
 
@@ -154,15 +164,38 @@ contract Shipping is Ownable {
     // payment related function  
 
     function fundMe() public payable{
+        require(msg.value > 0, "This fund amount isn't enough");
+
+        accounts[msg.sender] += msg.value;
 
     }
 
-    function transferAmount(address _to, uint256 _amount) public payable {
+    function transferAmount(uint256 _bolId) public payable onlyReceiver(_bolId) {
+        require(msg.value >= bolId[_bolId].materialCost, "The payment amount isn't enough");
+
+        ( bool callSuccess,) = payable(msg.sender).call{value: bolId[_bolId].materialCost}("");
+        require(callSuccess, "Transaction Failed");
+
+        accounts[bolId[_bolId].sender] += bolId[_bolId].materialCost;
+        bolId[_bolId].authorizedOwner = Authorization.Receiver;
+
+        confirmReceipt(msg.sender, bolId[_bolId].receiver, _bolId);
+
+
 
 
     }
 
     function widthdrawAmount(uint256 _amount) public payable{
+        require(address(this).balance >= accounts[msg.sender], "The contract doesn't have enought liquidity");
+        require(accounts[msg.sender] >= _amount, "The amount you want to redraw is more than the amount you have");
+
+        accounts[msg.sender] -= _amount;
+
+        ( bool callSuccess,) = payable(address(this)).call{value: _amount}("");
+
+        require(callSuccess, "The withdrawal of amount failed");
+
 
     }
 
@@ -191,7 +224,7 @@ contract Shipping is Ownable {
         return SenderRole[roleRecipient][roleCargoId];
     }
 
-    function shipBol(uint256 _bolId, address _transporter) external onlySender(_bolId) returns(Status){
+    function shipCargo(uint256 _bolId, address _transporter) external onlySender(_bolId) returns(Status){
         require(bols[_bolId].deliveryStatus == Status.Pending, "Delievery status must be in Pending state to ship");
         bols[_bolId].deliveryStatus = Status.Shipping;
         transporter[_bolId] = _transporter;
@@ -200,7 +233,7 @@ contract Shipping is Ownable {
         return bols[_bolId].deliveryStatus;
     }
 
-    function acceptBol(uint256 _bolId) external onlyReceiver(_bolId) returns(Status){
+    function acceptCargo(uint256 _bolId) external onlyReceiver(_bolId) returns(Status){
         require(bols[_bolId].deliveryStatus == Status.Shipping, "Delievery status must be in Shipping state to ship");
         require(keccak256(abi.encodePacked(bols[_bolId].finalDestination)) == keccak256(abi.encodePacked(bols[_bolId].currentLocation)), "Current location of cargo must be at final destination to accept");
         bols[_bolId].deliveryStatus = Status.Accepted;
@@ -208,21 +241,21 @@ contract Shipping is Ownable {
         return bols[_bolId].deliveryStatus;
     }
 
-    function rejectBol(uint256 _bolId) external onlyReceiver(_bolId) returns(Status){
+    function rejectCargo(uint256 _bolId) external onlyReceiver(_bolId) returns(Status){
         require(bols[_bolId].deliveryStatus == Status.Shipping, "Delievery status must be in Shipping state to ship");
         require(keccak256(abi.encodePacked(bols[_bolId].finalDestination)) == keccak256(abi.encodePacked(bols[_bolId].currentLocation)), "Current location of cargo must be at final destination to reject");
         bols[_bolId].deliveryStatus = Status.Rejected;
 
-        emit rejectedBol(_bolId);
+        emit rejectedCargo(_bolId);
         return bols[_bolId].deliveryStatus;
     }
 
-    function cancelBol(uint256 _bolId) external onlyReceiver(_bolId) returns(Status){
+    function cancelCargo(uint256 _bolId) external onlyReceiver(_bolId) returns(Status){
         require(bols[_bolId].deliveryStatus != Status.Accepted || bols[_bolId].deliveryStatus != Status.Rejected, "Delievery cannot be accepted or rejected in order to cancel");
         require(keccak256(abi.encodePacked(bols[_bolId].finalDestination)) != keccak256(abi.encodePacked(bols[_bolId].currentLocation)), "Current location of cargo cannot be at final destination to cancel");
         bols[_bolId].deliveryStatus = Status.Canceled;
 
-        emit cancelledBol(_bolId);
+        emit cancelledCargo(_bolId);
         return bols[_bolId].deliveryStatus;
     }
 
@@ -264,36 +297,20 @@ contract Shipping is Ownable {
             materialCost: _materialCost,
             specialInstructions: _specialInstructions,
             finalDestination: _finalDestination,
-            deliveryStatus: Status.Pending
+            deliveryStatus: Status.Pending,
+            authorizedOwner: Authorization.Sender
         });
 
         bols.push(newBol);
-        uint256 newBolId = bols.length - 1;
+        uint256 cargoId = bols.length - 1;
 
-        addSenderRole(newBol.sender, newBolId);
-        addReceiverRole(newBol.receiver, newBolId);
+        addSenderRole(newBol.sender, cargoId);
+        addReceiverRole(newBol.receiver, cargoId);
 
-        emit bolCreated(newBol.sender, newBol.receiver, newBol.material, newBol.materialCount);
+        emit cargoCreated(newBol.sender, newBol.receiver, newBol.material, newBol.materialCount);
 
-        return newBolId;
+        return cargoId;
     }
-
-    function addCargo(
-        address _senderOfGoods,
-        address _receiverOfBill, 
-        uint256[] memory _bolIDs) external onlyOwner returns(uint256){
-            Cargo memory newCargo = Cargo({
-                senderOfGoods: _senderOfGoods,
-                receiverOfBill: _receiverOfBill,
-                deliveryStatus: Status.Pending,
-                bolIDs: _bolIDs
-            });
-
-            cargo.push(newCargo);
-            uint256 newCargoId = cargo.length - 1;
-
-            return newCargoId;
-        }
 
    
     function updateLocation(string memory _currentLocation, uint256 _cargoId) external onlyTransporter(_cargoId){
@@ -303,10 +320,8 @@ contract Shipping is Ownable {
     }
 
     
-    function confirmReceipt() public {
-        // Might need currentLocaton to check if the item's currentLocation 
-        // is the same as deliveryDestination
-
+    function confirmReceipt(address _sender, address _receiver, uint256 _bolId) private {
+        emit payment( _sender, _receiver, _bolId);
     }
 
     
