@@ -1,146 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../public/homepage.css">
-    <link rel="stylesheet" href="../public/shipping.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../public/homepage.css" />
+    <link rel="stylesheet" href="../public/shipping.css" />
     <script src="./javascripts/shippingweb.js"></script>
+    <script src="./javascripts/header.js" type="text/javascript" defer></script>
+    `
     <script type="module" src="./javascripts/connectWallet.js"></script>
     <title>Shipping and Receiving App</title>
-</head>
-<body>
-    <img src="../public/image/mountain-scenery.png" alt="mountain-scenery img" style="position: absolute; height: auto; width: 100%;">
-    <header>
-        <nav class="nav-bar shippingnav-bar">
-            <h3><a href="./homepage.html">Shipping and Receiving App</a></h3>
-            <div class="right-nav-bar">
-                <h3 style="padding-right: 20px;"><a href="./shipping.html">Ship Delivery</a></h3>
-                <button id="connect-btn" class="connect-btn">
-                    Connect Wallet
-                    <span id="is-connected-value"></span>
-                    <span id="address-value"></span>
-                </button>
-            </div>
-        </nav>
-    </header>
+  </head>
+  <body>
+    <img
+      src="../public/image/mountain-scenery.png"
+      alt="mountain-scenery img"
+      style="position: absolute; height: auto; width: 100%"
+    />
+
     <div class="shippingpage-layout">
-        <nav class="sidebar">
-            <ul>
-                <li>
-                    <p style="margin-bottom: 0;">Menu</p>
-                    <h4>View Shipping Options</h4>
-                </li>
-                <hr class="solid-separator">
+      <nav class="sidebar">
+        <ul>
+          <li>
+            <p style="margin-bottom: 0">Menu</p>
+            <h4>View Shipping Options</h4>
+          </li>
+          <hr class="solid-separator" />
 
-                <li id="addOption" class="optionStatus clicked">
-                    <button onclick="openAddCargo()">
-                        <h4>Add and Ship Cargo</h4>
-                    </button>
-                    <p>Create order</p>
-                </li>
+          <li id="addOption" class="optionStatus clicked">
+            <button onclick="openAddCargo()">
+              <h4>Add and Ship Cargo</h4>
+            </button>
+            <p>Create order</p>
+          </li>
 
-                <li id="updateOption" class="optionStatus">
-                    <button onclick="openUpdateLocation()">
-                        <h4>Update Location</h4>
-                    </button>
-                    <p>Change order's current location</p>
-                </li>
+          <li id="updateOption" class="optionStatus">
+            <button onclick="openUpdateLocation()">
+              <h4>Update Location</h4>
+            </button>
+            <p>Change order's current location</p>
+          </li>
 
-                <li id="historyOption" class="optionStatus">
-                    <button onclick="openShipHistory()">
-                        <h4>Shipping History</h4>
-                    </button>
-                    <p>All your shipping reports is recorded here</p>
-                </li>
-            </ul>
-        </nav>
+          <li id="historyOption" class="optionStatus">
+            <button onclick="openShipHistory()">
+              <h4>Shipping History</h4>
+            </button>
+            <p>All your shipping reports is recorded here</p>
+          </li>
+        </ul>
+      </nav>
 
-        <main class="content-bar">
-            <div id="addCargo-content" class="content-style active">
-                <h3>Add Cargo Information</h3>
-                <div class="addform-input">
-                    <h5>Sender</h5>
-                    <input id="" type="text" placeholder="Enter crypto address">
-                    
-                    <h5>Receiver</h5>
-                    <input id="" type="text" placeholder="Enter crypto address">
+      <main class="content-bar">
+        <div id="addCargo-content" class="content-style active">
+          <h3>Add Cargo Information</h3>
+          <div class="addform-input">
+            <h5>Sender</h5>
+            <input id="" type="text" placeholder="Enter crypto address" />
 
-                    <h5>Current Location</h5>
-                    <input id="" type="text" placeholder="Enter city name">
+            <h5>Receiver</h5>
+            <input id="" type="text" placeholder="Enter crypto address" />
 
-                    <h5>Material</h5>
-                    <input id="" type="text" placeholder="Enter items(s)">
+            <h5>Current Location</h5>
+            <input id="" type="text" placeholder="Enter city name" />
 
-                    <h5>Quantity</h5>
-                    <input id="" type="text" placeholder="Enter number">
+            <h5>Material</h5>
+            <input id="" type="text" placeholder="Enter items(s)" />
 
-                    <h5>Cost</h5>
-                    <input type="number" name="" id="" placeholder="Enter value of material">
+            <h5>Quantity</h5>
+            <input id="" type="text" placeholder="Enter number" />
 
-                    <h5>Special Instructions</h5>
-                    <input id="" type="text" placeholder="Enter any instructions">
+            <h5>Cost</h5>
+            <input
+              type="number"
+              name=""
+              id=""
+              placeholder="Enter value of material"
+            />
 
-                    <h5>Final Location</h5>
-                    <input id="" type="text" placeholder="Enter city name">
+            <h5>Special Instructions</h5>
+            <input id="" type="text" placeholder="Enter any instructions" />
 
-                    <button type="submit">Submit Info</button>
-                </div>
+            <h5>Final Location</h5>
+            <input id="" type="text" placeholder="Enter city name" />
 
-                <div class="shippingform-input">
-                    <h3>Ship Cargo</h3>
-                    <h5 style="margin-bottom: 0;">BOL #</h5>
-                    <input type="text" placeholder="Enter bill of Landing number">
-                    <button type="submit">Ship Cargo</button>
-                </div>
+            <button type="submit">Submit Info</button>
+          </div>
+
+          <div class="shippingform-input">
+            <h3>Ship Cargo</h3>
+            <h5 style="margin-bottom: 0">BOL #</h5>
+            <input type="text" placeholder="Enter bill of Landing number" />
+            <button type="submit">Ship Cargo</button>
+          </div>
+        </div>
+        <div id="updateLocation-content" class="content-style">
+          <h3>Update Location of Cargo</h3>
+          <div class="updatesearch-input">
+            <h5>Enter Bill of Landing ID*</h5>
+            <input type="text" />
+
+            <h5>Wallet Address*</h5>
+            <input type="text" />
+
+            <button type="submit">Search</button>
+          </div>
+
+          <hr style="border: 2px solid black" />
+
+          <div class="outputupdate-input">
+            <h5>Search Result</h5>
+            <span></span>
+
+            <h5>New Location</h5>
+            <input type="text" />
+
+            <h5>Reason for Update</h5>
+            <input type="text" />
+
+            <button type="submit">Update</button>
+          </div>
+        </div>
+        <div id="shipHistory-content" class="content-style">
+          <h3>Shipping History</h3>
+
+          <div class="historyform-input">
+            <div style="margin-right: 10px">
+              <h5 style="margin: 0">Enter Bill of Landing ID</h5>
+              <input
+                type="text"
+                style="width: 100%"
+                placeholder="Enter Bill of Landing number"
+              />
             </div>
-            <div id="updateLocation-content" class="content-style">
-                <h3>Update Location of Cargo</h3>
-                <div class="updatesearch-input">
-                    <h5>Enter Bill of Landing ID*</h5>
-                    <input type="text">
+            <button type="submit" style="height: 40px">Search</button>
+          </div>
 
-                    <h5>Wallet Address*</h5>
-                    <input type="text">
-
-                    <button type="submit">Search</button>
-                </div>
-
-                <hr style="border: 2px solid black;">
-
-                <div class="outputupdate-input">
-                    <h5>Search Result</h5>
-                    <span></span>
-
-                    <h5>New Location</h5>
-                    <input type="text">
-
-                    <h5>Reason for Update</h5>
-                    <input type="text">
-
-                    <button type="submit">Update</button>
-                </div>
-            </div>
-            <div id="shipHistory-content" class="content-style">
-                <h3>Shipping History</h3>
-
-                <div class="historyform-input">
-                    <div style="margin-right: 10px;">
-                        <h5 style="margin: 0;">Enter Bill of Landing ID</h5>
-                        <input type="text" style="width: 100%" placeholder="Enter Bill of Landing number">
-                    </div>
-                    <button type="submit" style="height: 40px;">
-                        Search
-                    </button>
-                </div>
-
-                <span id="datatable-result"></span>
-            </div>
-        </main>
+          <span id="datatable-result"></span>
+        </div>
+      </main>
     </div>
-</body>
+  </body>
 </html>
-

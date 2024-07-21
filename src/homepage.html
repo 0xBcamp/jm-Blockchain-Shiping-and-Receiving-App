@@ -1,79 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../public/homepage.css">
-    <link rel="import" href="./header.html">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="./javascripts/header.js" type="text/javascript" defer></script>
+    <script type="module" src="./javascripts/connectWallet.js"></script>
+    <link rel="stylesheet" href="../public/homepage.css" />
+    <link rel="import" href="./header.html" />
     <title>Shipping and Receiving App</title>
-</head>
-<body>
-    
-    <header>
-        <nav class="nav-bar">
-            <h3><a href="./homepage.html">Shipping and Receiving App</a></h3>
-            <div class="right-nav-bar">
-                <h3 style="padding-right: 20px;"><a href="./shipping.html">Ship Delivery</a></h3>
-                <button class="connect-btn">Connect Wallet</button>
-            </div>
-        </nav>
-    </header>
-
+  </head>
+  <body>
     <div class="tracking-section">
-        <img src="../public/image/cargos-img.png" alt="cargo image" width="100%">
-        <div class="tracking-layout">
-            <div class="track-quote">
-                <h1>Reliable Blockchain Tracking</h1>
-                <button>
-                    <a href="./shipping.html" style="text-decoration: none; color: white;">
-                        Start Shipping!
-                    </a>
-                </button>
-            </div>
-            <div class="trackinput-layout">
-                <div class="track-box">
-                    <h4 style="margin: 0px;">Shipment Tracking</h4>
-                    <input type="text">
-                    <button>Submit</button>
-                </div>
-                
-            </div>
+      <img
+        src="../public/image/cargos-img.png"
+        alt="cargo image"
+        width="100%"
+      />
+      <div class="tracking-layout">
+        <div class="track-quote">
+          <h1>Reliable Blockchain Tracking</h1>
+          <button>
+            <a
+              href="./shipping.html"
+              style="text-decoration: none; color: white"
+            >
+              Start Shipping!
+            </a>
+          </button>
         </div>
+        <div class="trackinput-layout">
+          <div class="track-box">
+            <h4 style="margin: 0px">Shipment Tracking</h4>
+            <input type="text" />
+            <button>Submit</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="benefits-section">
-        <h1>Benefits</h1>
-        
-        <div class="row">
-            <div class="column">
-                <img src="../public/image/benefit1.png" alt="cargo truck image">
-            </div>
-            <div class="column">
-                <img src="../public/image/benefit2.png" alt="cargo image">
-            </div>
+      <h1>Benefits</h1>
+
+      <div class="row">
+        <div class="column">
+          <img src="../public/image/benefit1.png" alt="cargo truck image" />
         </div>
-        <div class="row">
-            <div class="column">
-                <img src="../public/image/benefit3.png" alt="currency image">
-            </div>
-            <div class="column">
-                <img src="../public/image/benefit4.png" alt="lock image">
-            </div>
+        <div class="column">
+          <img src="../public/image/benefit2.png" alt="cargo image" />
         </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <img src="../public/image/benefit3.png" alt="currency image" />
+        </div>
+        <div class="column">
+          <img src="../public/image/benefit4.png" alt="lock image" />
+        </div>
+      </div>
     </div>
 
     <div class="footer-section">
-        <img src="../public/image/footer.png" alt="cosmic image" width="100%">
-        <div class="tagline">Receive your delivery in a flash</div>
-        <button class="contact-button">Contact Us</button>
+      <img src="../public/image/footer.png" alt="cosmic image" width="100%" />
+      <div class="tagline">Receive your delivery in a flash</div>
+      <button class="contact-button">Contact Us</button>
     </div>
-    
-</body>
+  </body>
 </html>
 
 <script>
-    var content = document.querySelector('link[rel="import"]').import;
+  var content = document.querySelector('link[rel="import"]').import;
 </script>

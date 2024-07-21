@@ -596,7 +596,7 @@ console.log("step 0");
 let isConnected = false;
 let provider;
 connectBtn.addEventListener("click", async ()=>{
-    if (typeof window.ethereum !== "undefined") try {
+    if (typeof window.ethereum !== "null") try {
         isConnectedValue.innerText = "Loading...";
         // Request account access if needed
         console.log("step 1");
@@ -615,9 +615,6 @@ connectBtn.addEventListener("click", async ()=>{
         addressValue.innerText = `Address: ${address}`;
         isConnectedValue.innerText = "Connected";
         isConnected = true;
-        // Set the address value to local storage
-        localStorage.setItem("userAddress", address);
-        console.log("localStorage updated");
         console.log("step 5");
         // Your contract setup can go here
         const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
@@ -31155,4 +31152,4 @@ const wordlists = {
 
 },{"./lang-en.js":"6yvx9","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["7mEQk","1vA65"], "1vA65", "parcelRequire94c2")
 
-//# sourceMappingURL=homepage.69231e03.js.map
+//# sourceMappingURL=shipping.69231e03.js.map
