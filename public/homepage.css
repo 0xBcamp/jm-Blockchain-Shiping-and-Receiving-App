@@ -107,16 +107,18 @@ body {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+    align-items: center;
 }
 
-.column {
-    float: left;
-    width: 33.33%;
-    padding: 5px;
-  }
+.row {
+    display: flex;
+    flex-flow: row;
+    column-gap: 25px;
+    padding-bottom: 25px;
+}
 
 .footer-section {
-    padding-top: 35%;
+    padding-top: 10px;
     position: relative;
     text-align: center;
     color: white;
@@ -142,8 +144,6 @@ body {
     cursor: pointer;
     border-radius: 5px;
 }
-
-
 
 
 

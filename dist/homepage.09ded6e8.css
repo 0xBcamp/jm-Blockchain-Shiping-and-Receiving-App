@@ -101,20 +101,22 @@ body {
 
 .benefits-section {
   flex-flow: column wrap;
+  align-items: center;
   padding: 1em;
   display: flex;
 }
 
-.column {
-  float: left;
-  width: 33.33%;
-  padding: 5px;
+.row {
+  flex-flow: row;
+  column-gap: 25px;
+  padding-bottom: 25px;
+  display: flex;
 }
 
 .footer-section {
   text-align: center;
   color: #fff;
-  padding-top: 35%;
+  padding-top: 10px;
   position: relative;
 }
 
