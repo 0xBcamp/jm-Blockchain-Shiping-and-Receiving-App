@@ -173,7 +173,7 @@ contract Shipping is Ownable {
     function transferAmount(uint256 _bolId) public payable onlyReceiver(_bolId) {
         require(msg.value >= bolId[_bolId].materialCost, "The payment amount isn't enough");
 
-        ( bool callSuccess,) = payable(msg.sender).call{value: bolId[_bolId].materialCost}("");
+        ( bool callSuccess,) = payable(address(this)).call{value: bolId[_bolId].materialCost}("");
         require(callSuccess, "Transaction Failed");
 
         accounts[bolId[_bolId].sender] += bolId[_bolId].materialCost;
@@ -192,7 +192,7 @@ contract Shipping is Ownable {
 
         accounts[msg.sender] -= _amount;
 
-        ( bool callSuccess,) = payable(address(this)).call{value: _amount}("");
+        ( bool callSuccess,) = msg.sender.call{value: _amount}("");
 
         require(callSuccess, "The withdrawal of amount failed");
 

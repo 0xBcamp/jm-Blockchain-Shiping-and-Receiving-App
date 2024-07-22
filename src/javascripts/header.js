@@ -27,5 +27,5 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('is-connected-value').textContent = "Connected";
     } else {
         document.getElementById('is-connected-value').textContent = "Not Connected";
-    }
+    }   
 });
