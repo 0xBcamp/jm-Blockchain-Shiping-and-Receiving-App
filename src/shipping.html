@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/homepage.09ded6e8.css">
-    <link rel="stylesheet" href="/shipping.d616203b.css">
-    <script src="/shipping.e3e016c1.js"></script>
-    <script src="/homepage.1c5ed9c8.js" defer=""></script>
-    <script src="/homepage.69231e03.js" defer=""></script>
+    <link rel="stylesheet" href="../public/homepage.css">
+    <link rel="stylesheet" href="../public/shipping.css">
+    <script src="./javascripts/shippingweb.js"></script>
+    <script src="./javascripts/header.js" type="text/javascript" defer></script>
+    <script type="module" src="./javascripts/connectWallet.js"></script>
     <title>Shipping and Receiving App</title>
 </head>
 <body>
-    <img src="/mountain-scenery.fd69a772.png" alt="mountain-scenery img" style="width: 100%; height: auto; position: absolute">
+    <img src="../public/image/mountain-scenery.png" alt="mountain-scenery img" style="position: absolute; height: auto; width: 100%;">
     <div class="shippingpage-layout">
         <nav class="sidebar">
             <ul>
                 <li>
-                    <p style="margin-bottom: 0">Menu</p>
+                    <p style="margin-bottom: 0;">Menu</p>
                     <h4>View Shipping Options</h4>
                 </li>
                 <hr class="solid-separator">
@@ -80,7 +80,7 @@
 
                 <div class="shippingform-input">
                     <h3>Ship Cargo</h3>
-                    <h5 style="margin-bottom: 0">BOL #</h5>
+                    <h5 style="margin-bottom: 0;">BOL #</h5>
                     <input type="text" placeholder="Enter bill of Landing number">
                     <button type="submit">Ship Cargo</button>
                 </div>
@@ -97,7 +97,7 @@
                     <button type="submit">Search</button>
                 </div>
 
-                <hr style="border: 2px solid #000">
+                <hr style="border: 2px solid black;">
 
                 <div class="outputupdate-input">
                     <h5>Search Result</h5>
@@ -116,11 +116,11 @@
                 <h3>Shipping History</h3>
 
                 <div class="historyform-input">
-                    <div style="margin-right: 10px">
-                        <h5 style="margin: 0">Enter Bill of Landing ID</h5>
+                    <div style="margin-right: 10px;">
+                        <h5 style="margin: 0;">Enter Bill of Landing ID</h5>
                         <input type="text" style="width: 100%" placeholder="Enter Bill of Landing number">
                     </div>
-                    <button type="submit" style="height: 40px">
+                    <button type="submit" style="height: 40px;">
                         Search
                     </button>
                 </div>

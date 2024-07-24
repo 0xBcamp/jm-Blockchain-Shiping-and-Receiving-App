@@ -1,4 +1,5 @@
-const headerTemplate = document.createElement("template");
+const headerTemplate = document.createElement('template');
+
 headerTemplate.innerHTML = `
     <header>
         <nav class="nav-bar shippingnav-bar">
@@ -13,13 +14,18 @@ headerTemplate.innerHTML = `
             </div>
         </nav>
     </header>
-`;
-document.body.prepend(headerTemplate.content);
-document.addEventListener("DOMContentLoaded", ()=>{
-    // Retrieve userAdress from localStorage
-    const userAddress = localStorage.getItem("userAddress");
-    if (userAddress) document.getElementById("address-value").textContent = `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`;
-    else document.getElementById("is-connected-value").textContent = "Not Connected";
-});
+`
 
-//# sourceMappingURL=homepage.1c5ed9c8.js.map
+document.body.prepend(headerTemplate.content);
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Retrieve userAdress from localStorage
+    const userAddress = localStorage.getItem('userAddress');
+
+    if(userAddress){
+        document.getElementById('address-value').textContent = `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`;
+        // document.getElementById('is-connected-value').textContent = "Connected";
+    } else {
+        document.getElementById('is-connected-value').textContent = "Not Connected";
+    }   
+});

@@ -1,0 +1,118 @@
+body {
+    height: 100vh;
+    font-family: "Inria Sans", sans-serif;
+    /* font-weight: 700; */
+}
+
+.shippingnav-bar {
+    position: relative;
+}
+
+.shippingpage-layout {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position: relative;
+}
+
+.sidebar {
+    width: 20%;
+    background-color: white;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    list-style: none;
+    padding: 20px;
+    margin: 0;
+}
+
+.sidebar ul h4{
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul p {
+    margin-top: 0;
+    color: #757575;
+}
+
+.sidebar ul li button {
+    border: none;
+    background-color: transparent;
+}
+
+.solid-separator {
+    border: 2px solid #D9D9D9;
+}
+
+.optionStatus {
+    background-color: transparent;
+}
+
+.clicked {
+    background-color: wheat;
+    border-radius: 10px;
+
+}
+
+/* Main Content CSS */
+
+.content-bar {
+    margin-left: 2%;
+    width: 75%;
+    height: 95%;
+    background-color: #D9D9D9;
+    opacity: 80%;
+    overflow-y: auto;
+}
+
+.content-bar button {
+    background-color: #2C2C2C;
+    color: white;
+    font-family: "Inria Sans", sans-serif;
+    padding: 10px 15px 10px 15px;
+    border-radius: 10px;
+}
+
+.content-bar input {
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+    width: 40%;
+}
+
+.content-style {
+    display: none;
+    padding: 20px;
+}
+
+.active {
+    display: block;
+}
+
+/* Add Cargo content */
+.addform {
+    padding: 20px;
+}
+
+.addform-input h5 {
+    margin: 0;
+}
+
+.addform-input input {
+    margin-bottom: 10px;
+}
+
+/* Update Location content */
+#updateLocation-content h5 {
+    margin-bottom: 0;
+}
+
+/* Ship History content */
+.historyform-input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
