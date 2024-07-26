@@ -1,7 +1,9 @@
-const ethers = require('ethers');
-const {abi} = require('../../contracts/artifacts/Shipping.json');
-console.log("ethers: ", ethers);
-console.log("abi: ", abi);
+// const ethers = require('ethers');
+// const {abi} = require('../../contracts/artifacts/Shipping.json');
+// console.log("ethers: ", ethers);
+// console.log("abi: ", abi);
+
+import contractABI from "../../contracts/artifacts/Shipping.json";
 
 const connectBtn = document.getElementById('connect-btn');
 const addressValue = document.getElementById('address-value')
