@@ -44,25 +44,31 @@ async function connectWallet() {
 }
 
 
-
+// function to transfer amount to pay for goods
 async function transferAmount(amount) {
     
 }
 
 
+// function to withdraw money paid from a successful delivery
 async function widthrawAmount(amount) {
     
 }
 
 
+/*A function to ship your cargo by allowing the transporting company to have authority to update the cargo location */
 async function shipCargo(boldId, transportCompanyAddress) {
     
 }
 
+
+// Function to register your company on the blockchain
 async function registerCompany(name, email, phoneNo, website, companyAddress) {
     
 }
 
+
+// Function to generate BillofLading for the transaction on blockchain
 async function addBillofLading(sender, receiver, currentLocation, material, 
     materialCount, materialCost, specialInstruction, finalDestination) {
     
@@ -70,6 +76,20 @@ async function addBillofLading(sender, receiver, currentLocation, material,
 
 
 
+
+
+// FUNCTIONS TO RETURN SHIPPING DATA IN BLOCKCHAIN
+    
+
+// Function to return the billofLading for a particular cargo
+async function getBillofLading(shippingId) {
+    
+}
+
+// Function to get the loationId for a cargo
+async function getLatestLocation(locationId) {
+    
+}
 
 
 
