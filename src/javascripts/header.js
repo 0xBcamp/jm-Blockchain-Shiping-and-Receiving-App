@@ -1,4 +1,4 @@
-
+import {connectWallet} from "./connectWallet.js"
 const headerTemplate = document.createElement('template');
 
 headerTemplate.innerHTML = `
@@ -7,7 +7,7 @@ headerTemplate.innerHTML = `
             <h3><a href="../homepage.html">Test Shipping and Receiving App</a></h3>
             <div class="right-nav-bar">
                 <h3 style="padding-right: 20px;"><a href="../shipping.html">Ship Delivery</a></h3>
-                <button id="connect-btn" class="connect-btn">
+                <button id="connect-btn" class="connect-btn" onClick=connectWallet()>
                     Connect Wallet:
                     <span id="is-connected-value"></span>
                     <span id="address-value"></span>

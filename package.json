@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "dev": "parcel src/homepage.html"
+    "dev": "parcel src/homepage.html --open",
+    "build":"parcel build src/homepage.html, src/shippng.html"
+
   },
   "dependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
