@@ -37,6 +37,39 @@ let web3 = new Web3(window.ethereum)
 
 const contract = new web3.eth.Contract(contractABI, contractAddress)
 
+async function connectWallet() {
+    if (window.ethereum) {
+        
+    }
+}
+
+
+
+async function transferAmount(amount) {
+    
+}
+
+
+async function widthrawAmount(amount) {
+    
+}
+
+
+async function shipCargo(boldId, transportCompanyAddress) {
+    
+}
+
+async function registerCompany(name, email, phoneNo, website, companyAddress) {
+    
+}
+
+async function addBillofLading(sender, receiver, currentLocation, material, 
+    materialCount, materialCost, specialInstruction, finalDestination) {
+    
+    }
+
+
+
 
 
 
