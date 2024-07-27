@@ -39,6 +39,16 @@ const contract = new web3.eth.Contract(contractABI, contractAddress)
 
 async function connectWallet() {
     if (window.ethereum) {
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" })
+            .then((result) => {
+                if (wallet.code == "4001") {
+                    console.log("Please connect your wallet")
+                } else {
+                    console.log(wallet)
+                    setConnected(wallet[0])
+
+                }
+            })
         
     }
 }
@@ -89,6 +99,20 @@ async function getBillofLading(shippingId) {
 // Function to get the loationId for a cargo
 async function getLatestLocation(locationId) {
     
+}
+
+
+
+// FUNCTIONS TO CHANGE COMPONENTS
+
+function shortAddress(address, startLength = 6, endLength = 4) {
+    return `${address.slice(0, startLength)}...${address.slice(-endLength)}}`;
+    
+}
+
+function setConnected(address) {
+    document.getElementById("connect-btn").innerText = 
+        "Connected:" + shortAddress(address)
 }
 
 
