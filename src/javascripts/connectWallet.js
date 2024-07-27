@@ -2,8 +2,10 @@
 // const {abi} = require('../../contracts/artifacts/Shipping.json');
 // console.log("ethers: ", ethers);
 // console.log("abi: ", abi);
-const contractABI = require("../shippingabi.json")
 
+import contractABI from "../shippingabi.json";
+
+console.log(contractABI)
 
 const connectBtn = document.getElementById('connect-btn');
 const addressValue = document.getElementById('address-value')

@@ -1,5 +1,4 @@
 
-
 const headerTemplate = document.createElement('template');
 
 headerTemplate.innerHTML = `
@@ -21,6 +20,9 @@ headerTemplate.innerHTML = `
 document.body.prepend(headerTemplate.content);
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    
+    
     // Retrieve userAdress from localStorage
     const userAddress = localStorage.getItem('userAddress');
 
