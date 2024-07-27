@@ -1,3 +1,5 @@
+
+
 const headerTemplate = document.createElement('template');
 
 headerTemplate.innerHTML = `
@@ -28,4 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         document.getElementById('is-connected-value').textContent = "Not Connected";
     }   
+
+
 });

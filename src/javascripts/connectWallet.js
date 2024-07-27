@@ -2,8 +2,8 @@
 // const {abi} = require('../../contracts/artifacts/Shipping.json');
 // console.log("ethers: ", ethers);
 // console.log("abi: ", abi);
+const contractABI = require("../shippingabi.json")
 
-import contractABI from "../shippingabi.json";
 
 const connectBtn = document.getElementById('connect-btn');
 const addressValue = document.getElementById('address-value')
@@ -50,7 +50,11 @@ async function connectWallet() {
                 }
             })
         
-    }
+    } else {
+    console.error("No web3 provider detected");
+    document.getElementById("connectMessage").innerText =
+      "No web3 provider detected. Please install MetaMask.";
+  }
 }
 
 
@@ -114,6 +118,16 @@ function setConnected(address) {
     document.getElementById("connect-btn").innerText = 
         "Connected:" + shortAddress(address)
 }
+
+
+
+
+
+// IMPLEMENTATION CODE
+
+document.querySelector(".connect-btn").addEventListener('click', function () {
+    console.log("button clicked")
+})
 
 
 
