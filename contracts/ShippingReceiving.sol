@@ -4,7 +4,6 @@
     import '@openzeppelin/contracts/access/Ownable.sol';
     import '@openzeppelin/contracts/access/AccessControl.sol';
 
-    // 0x37f015808b35fCf45D19781E96380E486B75Bc64
 
     contract Shipping is Ownable {
 
@@ -107,19 +106,19 @@
         //ALL MAPPINGS
 
         //A mapping to return the transaction history of a particular company
-        mapping(address => mapping(TransactionRole => uint256[])) public companyTransactionHistory;
+        mapping(address => mapping(TransactionRole => uint256[])) private companyTransactionHistory;
 
         //A mapping to return the details of a companyData
         mapping(address => Company) public companyInfo;
         
         //A mapping to return the Cargo and it BillofLading for a particular orderId ??
-        mapping(uint256 => Cargo) public orderId;
+        mapping(uint256 => Cargo) private orderId;
 
         // A mapping to return the bill of landing Id
-        mapping(uint256 => Billoflading) public bolId;
+        mapping(uint256 => Billoflading) private bolId;
         
         //A mapping to return the location of the cargo
-        mapping(uint256 => string) public location;
+        mapping(uint256 => string) private location;
 
         mapping (address => mapping (uint256 => bool)) private SenderRole;
         mapping (address => mapping (uint256 => bool)) private ReceiverRole;
@@ -146,6 +145,13 @@
 
         modifier onlyTransporter(uint256 _cargoId){
             require(msg.sender == transporter[_cargoId]);
+            _;
+        }
+
+        modifier onlyTransactionParty(uint256 _cargoId){
+            require(SenderRole[msg.sender][_cargoId] || ReceiverRole[msg.sender][_cargoId] ||
+            msg.sender == transporter[_cargoId], "you have no business with this transaction");
+
             _;
         }
 
@@ -326,13 +332,9 @@
             });
 
             orderId[cargoId] = newCargo;
-
             cargo.push(newCargo);
-
             location[cargoId] = _currentLocation;
-
             companyTransactionHistory[msg.sender][senderRole].push(cargoId);
-
             companyTransactionHistory[_receiver][receiverRole].push(cargoId);
 
             addSenderRole(newBol.sender, cargoId);
@@ -354,14 +356,7 @@
         function confirmReceipt(address _sender, address _receiver, uint256 _bolId) private {
             emit payment( _sender, _receiver, _bolId);
         }
-
         
-
-
-        
-
-
-
         // RETURN FUNCTIONS
 
         function getBillOfLading(uint256 _id) public view returns (Billoflading memory){
@@ -370,8 +365,21 @@
 
         }
 
-        function getLatestLocation(uint256 _id) public view returns (string memory){
+        function getLatestLocation(uint256 _id) public view onlyTransactionParty(_id) returns (string memory) {
             return location[_id];
+        }
+
+        function getCargo(uint256 _id) public view onlyTransactionParty(_id) returns (Cargo memory){
+            return orderId[_id]; 
+        }
+
+        function getAllCompanyTransactionHistorySender() public view returns (uint256[] memory){
+            return companyTransactionHistory[msg.sender][senderRole];
+
+        }
+
+        function getAllCompanyTransactionHistoryReceiver() public view returns (uint256[] memory){
+            return companyTransactionHistory[msg.sender][receiverRole];
         }
 
 
