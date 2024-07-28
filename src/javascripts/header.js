@@ -1,4 +1,4 @@
-import {connectWallet} from "./connectWallet.js"
+
 const headerTemplate = document.createElement('template');
 
 headerTemplate.innerHTML = `

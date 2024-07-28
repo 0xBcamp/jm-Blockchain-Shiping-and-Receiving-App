@@ -8,14 +8,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../public/homepage.css">
     <link rel="stylesheet" href="../public/shipping.css">
-    <script src="./javascripts/header.js" type="text/javascript" defer></script>
-    <script defer src="./javascripts/connectWallet.js"></script>
-    <script defer src="./javascripts/shippingweb.js"></script>
+    <!-- <script type="module" src="./javascripts/header.js" type="text/javascript" defer></script> -->
+    <script type="module" defer src="./javascripts/connectWallet.js"></script>
+    <!-- <script src="./javascripts/shippingweb.js"></script> -->
     
     
     <title>Shipping and Receiving App</title>
 </head>
 <body>
+    <header>
+        <nav class="nav-bar shippingnav-bar">
+            <h3><a href="../homepage.html">Test Shipping and Receiving App</a></h3>
+            <div class="right-nav-bar">
+                <h3 style="padding-right: 20px;"><a href="../shipping.html">Ship Delivery</a></h3>
+                <button id="connect-btn" class="connect-btn" onclick=connectWallet>
+                    Connect Wallet:
+                    <span id="is-connected-value"></span>
+                    <span id="address-value"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <div>
     <img src="../public/image/mountain-scenery.png" alt="mountain-scenery img" style="position: absolute; height: auto; width: 100%;">
     <div class="shippingpage-layout">
         <nav class="sidebar">
@@ -130,6 +145,7 @@
                 <span id="datatable-result"></span>
             </div>
         </main>
+    </div>
     </div>
 </body>
 </html>

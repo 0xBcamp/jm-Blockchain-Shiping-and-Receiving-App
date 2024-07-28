@@ -31,13 +31,12 @@
 
         //ALL STRUCTS
 
-        //a customized data structure for bill of lading
+        //a customized data structure for Cargo
         struct Cargo {
             uint256 orderId;
             address senderOfGoods;
             address receiverOfBill;
             Status deliveryStatus; 
-            uint256[] bolIDs;
         }
         
         //a customized data structure for company
@@ -97,9 +96,9 @@
         TransactionRole receiverRole = TransactionRole.receiver;
         
         //cargo array variable
-        Cargo[] cargo;
+        Cargo[]  public cargo;
 
-        Billoflading[] bols;
+        Billoflading[] public bols;
 
         //VARIABLE CODE ENDS
 
@@ -108,7 +107,7 @@
         //ALL MAPPINGS
 
         //A mapping to return the transaction history of a particular company
-        mapping(address => mapping(TransactionRole => uint256[])) private companyTransactionHistory;
+        mapping(address => mapping(TransactionRole => uint256[])) public companyTransactionHistory;
 
         //A mapping to return the details of a companyData
         mapping(address => Company) public companyInfo;
@@ -129,7 +128,7 @@
         mapping(uint256 => address) public transporter;
 
         // A mapping for payments in the contract
-        mapping(address => uint256) private accounts;
+        mapping(address => uint256) public accounts;
 
         // MAPPINGS CODE BLOCKS ENDS
 
@@ -172,7 +171,7 @@
 
         function transferAmount(uint256 _bolId) public payable onlyReceiver(_bolId) {
             require(msg.value >= bolId[_bolId].materialCost, "The payment amount isn't enough");
-
+            
             ( bool callSuccess,) = payable(address(this)).call{value: bolId[_bolId].materialCost}("");
             require(callSuccess, "Transaction Failed");
 
@@ -186,16 +185,28 @@
 
         }
 
-        function widthdrawAmount(uint256 _amount) public payable{
+        function widthdrawTrade(uint256 _bolId) public payable{
             require(address(this).balance >= accounts[msg.sender], "The contract doesn't have enought liquidity");
-            require(accounts[msg.sender] >= _amount, "The amount you want to redraw is more than the amount you have");
+            require(accounts[msg.sender] >= bolId[_bolId].materialCost, "The amount you want to redraw is more than the amount you have");
 
-            accounts[msg.sender] -= _amount;
+            accounts[msg.sender] -= bolId[_bolId].materialCost;
 
-            ( bool callSuccess,) = msg.sender.call{value: _amount}("");
+            ( bool callSuccess,) = payable(msg.sender).call{value: bolId[_bolId].materialCost}("");
 
             require(callSuccess, "The withdrawal of amount failed");
 
+
+        }
+
+        function widthdrawAll() public payable {
+            require(address(this).balance >= accounts[msg.sender],"The contract doesn't have enough funds");
+            require(accounts[msg.sender] >= 0, "You dont have enough funds in this account");
+            uint256 totalAmount = accounts[msg.sender];
+            accounts[msg.sender] -= accounts[msg.sender];
+
+            (bool callSuccess,) = payable(msg.sender).call{value:totalAmount}("");
+
+            require(callSuccess, "The withdrawal of amount failed");
 
         }
 
@@ -279,7 +290,7 @@
 
         }
 
-        function addBillofLanding(address _sender, 
+        function addBillofLanding(
                         address _receiver, 
                         string memory _currentLocation,
                         string memory _material, 
@@ -289,7 +300,7 @@
                         string memory _finalDestination               
         ) external returns(uint256){
             Billoflading memory newBol = Billoflading({
-                sender: _sender,
+                sender: msg.sender,
                 receiver: _receiver,
                 currentLocation: _currentLocation,
                 material: _material,
@@ -301,8 +312,28 @@
                 authorizedOwner: Authorization.Sender
             });
 
+            
+
             bols.push(newBol);
             uint256 cargoId = bols.length - 1;
+            bolId[cargoId] = newBol;
+
+            Cargo memory newCargo = Cargo({
+                orderId:cargoId,
+                senderOfGoods:msg.sender,
+                receiverOfBill:_receiver,
+                deliveryStatus: Status.Pending
+            });
+
+            orderId[cargoId] = newCargo;
+
+            cargo.push(newCargo);
+
+            location[cargoId] = _currentLocation;
+
+            companyTransactionHistory[msg.sender][senderRole].push(cargoId);
+
+            companyTransactionHistory[_receiver][receiverRole].push(cargoId);
 
             addSenderRole(newBol.sender, cargoId);
             addReceiverRole(newBol.receiver, cargoId);

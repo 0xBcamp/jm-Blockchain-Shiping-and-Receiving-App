@@ -1,11 +1,23 @@
+import contractABI from "../shippingabi.json";
+
 // const ethers = require('ethers');
 // const {abi} = require('../../contracts/artifacts/Shipping.json');
 // console.log("ethers: ", ethers);
 // console.log("abi: ", abi);
 
-import contractABI from "../shippingabi.json";
 
-console.log(contractABI)
+
+
+
+
+//HEADER FUNCTION CODE ENDS
+
+
+
+//CONTRACT FUNCTION CODES STARTS
+
+
+// console.log(contractABI)
 
 const connectBtn = document.getElementById('connect-btn');
 const addressValue = document.getElementById('address-value')
@@ -127,9 +139,67 @@ function setConnected(address) {
 
 // IMPLEMENTATION CODE
 
-document.querySelector(".connect-btn").addEventListener('click', function () {
+document.querySelector("connect-btn").addEventListener('click', function () {
     console.log("button clicked")
 })
+    
+    
+//CONTRACT FUNCTION CODE ENDS
+
+
+
+
+
+//WEB FUNCTIONS STARTS
+console.log('hello from shippingweb.js');
+
+const  openAddCargo = () => {
+    const addCargoDiv = document.getElementById('addCargo-content');
+    const addOptionDiv = document.getElementById('addOption');
+
+    let activeEl = document.getElementsByClassName('active');
+    let clickedEl = document.getElementsByClassName('clicked');
+    
+    clickedEl[0].classList.remove('clicked');
+    activeEl[0].classList.remove('active');
+    
+    addCargoDiv.classList.add('active');
+    addOptionDiv.classList.add('clicked');
+}
+
+const openUpdateLocation = () => {
+    const updateLocationDiv = document.getElementById('updateLocation-content');
+    const updateOptionDiv = document.getElementById('updateOption');
+
+    let activeEl = document.getElementsByClassName('active');
+    let clickedEl = document.getElementsByClassName('clicked');
+    
+    activeEl[0].classList.remove('active');
+    clickedEl[0].classList.remove('clicked');
+
+    updateLocationDiv.classList.add('active');
+    updateOptionDiv.classList.add('clicked');
+}
+
+const openShipHistory = () => {
+    const shipHistoryDiv = document.getElementById('shipHistory-content');
+    const historyOptionDiv = document.getElementById('historyOption');
+    
+    let activeEl = document.getElementsByClassName('active');
+    let clickedEl = document.getElementsByClassName('clicked');
+    
+    activeEl[0].classList.remove('active');
+    clickedEl[0].classList.remove('clicked');
+
+    shipHistoryDiv.classList.add('active');
+    historyOptionDiv.classList.add('clicked');
+}
+
+
+//WEB FUNCTION ENDS
+
+
+
 
 
 
